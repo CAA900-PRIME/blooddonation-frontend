@@ -4,6 +4,7 @@ import Login from "./pages/Login";
 import Signup from "./pages/Signup";
 import Dashboard from "./pages/Dashboard";
 import InfoPage from "./pages/InfoPage";
+import BloodRequest from "./pages/BloodRequest";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
@@ -34,6 +35,9 @@ function App() {
                       <Link className="nav-link" to="/info">Information</Link>
                     </li>
                     <li className="nav-item">
+                      <Link className="nav-link" to="/blood-request">Request Blood</Link>
+                    </li>
+                    <li className="nav-item">
                       <button className="btn btn-danger" onClick={() => {
                         localStorage.removeItem("user");
                         setUser(null);
@@ -60,6 +64,7 @@ function App() {
           <Route path="/signup" element={<Signup />} />
           <Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Login setUser={setUser} />} />
           <Route path="/info" element={<InfoPage />} />
+          <Route path="/blood-request" element={<BloodRequest />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
