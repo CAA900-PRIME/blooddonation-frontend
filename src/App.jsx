@@ -1,11 +1,22 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-import { useState } from "react";
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from "react-router-dom";
+import { useState, useEffect } from "react";
 import Login from "./pages/Login";
 import Signup from "./pages/Signup";
+import Dashboard from "./pages/Dashboard";
+import InfoPage from "./pages/InfoPage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
 
 function App() {
+  const [user, setUser] = useState(null);
+
+  useEffect(() => {
+    const storedUser = localStorage.getItem("user");
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));
+    }
+  }, []);
+
   return (
     <Router>
       <div className="container text-center mt-5">
@@ -14,29 +25,41 @@ function App() {
             <a className="navbar-brand" href="/">Blood Donation App</a>
             <div className="collapse navbar-collapse">
               <ul className="navbar-nav ms-auto">
-                <li className="nav-item">
-                  <Link className="nav-link" to="/login">Login</Link>
-                </li>
-                <li className="nav-item">
-                  <Link className="nav-link" to="/signup">Signup</Link>
-                </li>
+                {user ? (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/dashboard">Dashboard</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/info">Information</Link>
+                    </li>
+                    <li className="nav-item">
+                      <button className="btn btn-danger" onClick={() => {
+                        localStorage.removeItem("user");
+                        setUser(null);
+                      }}>Logout</button>
+                    </li>
+                  </>
+                ) : (
+                  <>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/login">Login</Link>
+                    </li>
+                    <li className="nav-item">
+                      <Link className="nav-link" to="/signup">Signup</Link>
+                    </li>
+                  </>
+                )}
               </ul>
             </div>
           </div>
         </nav>
 
-        <div className="jumbotron p-5 bg-primary text-white rounded">
-          <h1 className="display-4">Welcome to Blood Donation App</h1>
-          <p className="lead">Join us in saving lives by donating blood to those in need.</p>
-          <hr className="my-4" />
-          <p>Click below to sign up or log in.</p>
-          <Link className="btn btn-light btn-lg me-2" to="/signup">Signup</Link>
-          <Link className="btn btn-outline-light btn-lg" to="/login">Login</Link>
-        </div>
-
         <Routes>
-          <Route path="/login" element={<Login />} />
+          <Route path="/login" element={<Login setUser={setUser} />} />
           <Route path="/signup" element={<Signup />} />
+          <Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Login setUser={setUser} />} />
+          <Route path="/info" element={<InfoPage />} />
           <Route path="/" element={<Home />} />
         </Routes>
       </div>
@@ -46,14 +69,15 @@ function App() {
 
 function Home() {
   return (
-    <div className="container mt-4">
-      <h2>Why Donate Blood?</h2>
-      <p>Blood donation is a vital part of worldwide healthcare. Every donation can save up to three lives!</p>
-      <ul className="list-group">
-        <li className="list-group-item">Improve your own health by donating</li>
-        <li className="list-group-item">Help people in emergency situations</li>
-        <li className="list-group-item">Make a difference in someone's life</li>
-      </ul>
+    <div className="container mt-5">
+      <div className="jumbotron p-5 bg-danger text-white rounded">
+        <h1 className="display-4">Donate Blood, Save Lives</h1>
+        <p className="lead">Every drop counts! Join our mission to help those in need by becoming a blood donor.</p>
+        <hr className="my-4" />
+        <p>Sign up today and make a difference in someone's life.</p>
+        <Link className="btn btn-light btn-lg me-2" to="/signup">Become a Donor</Link>
+        <Link className="btn btn-outline-light btn-lg" to="/login">Login</Link>
+      </div>
     </div>
   );
 }
