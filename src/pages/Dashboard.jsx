@@ -1,56 +1,65 @@
 import React from "react";
-import { BrowserRouter as Router, Route, Routes, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
-import InfoPage from "./InfoPage";
 
 const Sidebar = () => (
-  <div className="w-64 bg-gray-900 h-screen p-5 text-white fixed">
-    <h2 className="text-xl font-bold mb-5">Dashboard</h2>
-    <nav>
-      <ul>
-        <li className="mb-3"><Link to="/dashboard" className="flex items-center gap-2"><FiHome /> Dashboard</Link></li>
-        <li className="mb-3"><Link to="/users" className="flex items-center gap-2"><FiUser /> Users</Link></li>
-        <li className="mb-3"><Link to="/donations" className="flex items-center gap-2"><FiHeart /> Donations</Link></li>
-        <li className="mb-3"><Link to="/info" className="flex items-center gap-2"><FiBarChart2 /> Info</Link></li>
-      </ul>
-    </nav>
+  <div className="sidebar bg-dark text-white vh-100 p-3 position-fixed" style={{ width: "250px" }}>
+    <h2 className="mb-4">Dashboard</h2>
+    <ul className="nav flex-column">
+      <li className="nav-item mb-2">
+        <Link to="/dashboard" className="nav-link text-white"><FiHome /> Dashboard</Link>
+      </li>
+      <li className="nav-item mb-2">
+        <Link to="/users" className="nav-link text-white"><FiUser /> Users</Link>
+      </li>
+      <li className="nav-item mb-2">
+        <Link to="/donations" className="nav-link text-white"><FiHeart /> Donations</Link>
+      </li>
+      <li className="nav-item mb-2">
+        <Link to="/info" className="nav-link text-white"><FiBarChart2 /> Info</Link>
+      </li>
+    </ul>
   </div>
 );
 
-const Navbar = ({ user }) => (
-  <div className="ml-64 bg-gray-100 p-4 shadow flex justify-between">
-    <h2 className="text-xl font-bold">Welcome, {user ? user.name : "Guest"}</h2>
-    <div>
-      <button className="mr-4">🔔 Notifications</button>
-      <button>👤 Profile</button>
+const Navbar = () => (
+  <div className="navbar bg-light p-3" style={{ marginLeft: "250px" }}>
+    <h2 className="d-inline-block">Welcome to the Dashboard</h2>
+    <div className="float-end">
+      <button className="btn btn-warning me-2">🔔 Notifications</button>
+      <button className="btn btn-secondary">👤 Profile</button>
     </div>
   </div>
 );
 
-const Home = () => (
-  <div className="p-5">
-    <h2 className="text-2xl font-bold">Overview</h2>
-    <div className="grid grid-cols-3 gap-5 mt-5">
-      <div className="bg-white p-5 shadow rounded">Total Donations: 120</div>
-      <div className="bg-white p-5 shadow rounded">Active Users: 35</div>
-      <div className="bg-white p-5 shadow rounded">Pending Requests: 10</div>
-    </div>
-  </div>
-);
-
-const Dashboard = ({ user }) => {
+const Dashboard = () => {
   return (
-    <div className="flex">
+    <div className="d-flex">
       <Sidebar />
-      <div className="ml-64 w-full">
-        <Navbar user={user} />
-        <div className="p-5">
-          <Routes>
-            <Route path="/dashboard" element={<Home />} />
-            <Route path="/users" element={<div>Users Page</div>} />
-            <Route path="/donations" element={<div>Donations Page</div>} />
-            <Route path="/info" element={<InfoPage />} />
-          </Routes>
+      <div className="content p-4 w-100" style={{ marginLeft: "250px" }}>
+        <Navbar />
+        <div className="mt-4">
+          <h3 className="text-center">Dashboard Overview</h3>
+          <div className="row mt-3">
+            <div className="col-md-4">
+              <div className="card p-3 text-center">
+                <h5>Total Donations</h5>
+                <p className="fs-4">120</p>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card p-3 text-center">
+                <h5>Active Users</h5>
+                <p className="fs-4">35</p>
+              </div>
+            </div>
+            <div className="col-md-4">
+              <div className="card p-3 text-center">
+                <h5>Pending Requests</h5>
+                <p className="fs-4">10</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
