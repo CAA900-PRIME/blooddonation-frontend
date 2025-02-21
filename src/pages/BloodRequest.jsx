@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import "../styles/BloodRequest.css"; // Import the new CSS file
 
 function BloodRequest() {
   const [formData, setFormData] = useState({
@@ -22,55 +23,41 @@ function BloodRequest() {
   };
 
   return (
-    <div className="container mt-5">
-      <h2 className="mb-4">Request Blood</h2>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-3">
-          <label className="form-label">Full Name</label>
-          <input type="text" name="fullName" className="form-control" value={formData.fullName} onChange={handleChange} required />
-        </div>
+    <div className="blood-request-container">
+      <h2>Request Blood</h2>
+      <form className="blood-request-form" onSubmit={handleSubmit}>
+        <label>Full Name</label>
+        <input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
 
-        <div className="mb-3">
-          <label className="form-label">Email</label>
-          <input type="email" name="email" className="form-control" value={formData.email} onChange={handleChange} required />
-        </div>
+        <label>Email</label>
+        <input type="email" name="email" value={formData.email} onChange={handleChange} required />
 
-        <div className="mb-3">
-          <label className="form-label">Phone Number</label>
-          <input type="text" name="phone" className="form-control" value={formData.phone} onChange={handleChange} required />
-        </div>
+        <label>Phone Number</label>
+        <input type="text" name="phone" value={formData.phone} onChange={handleChange} required />
 
-        <div className="mb-3">
-          <label className="form-label">Blood Group</label>
-          <select name="bloodGroup" className="form-control" value={formData.bloodGroup} onChange={handleChange} required>
-            <option value="">Select Blood Group</option>
-            <option value="A+">A+</option>
-            <option value="A-">A-</option>
-            <option value="B+">B+</option>
-            <option value="B-">B-</option>
-            <option value="O+">O+</option>
-            <option value="O-">O-</option>
-            <option value="AB+">AB+</option>
-            <option value="AB-">AB-</option>
-          </select>
-        </div>
+        <label>Blood Group</label>
+        <select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required>
+          <option value="">Select Blood Group</option>
+          <option value="A+">A+</option>
+          <option value="A-">A-</option>
+          <option value="B+">B+</option>
+          <option value="B-">B-</option>
+          <option value="O+">O+</option>
+          <option value="O-">O-</option>
+          <option value="AB+">AB+</option>
+          <option value="AB-">AB-</option>
+        </select>
 
-        <div className="mb-3">
-          <label className="form-label">City</label>
-          <input type="text" name="city" className="form-control" value={formData.city} onChange={handleChange} required />
-        </div>
+        <label>City</label>
+        <input type="text" name="city" value={formData.city} onChange={handleChange} required />
 
-        <div className="mb-3">
-          <label className="form-label">Hospital Name</label>
-          <input type="text" name="hospital" className="form-control" value={formData.hospital} onChange={handleChange} required />
-        </div>
+        <label>Hospital Name</label>
+        <input type="text" name="hospital" value={formData.hospital} onChange={handleChange} required />
 
-        <div className="mb-3">
-          <label className="form-label">Reason for Request</label>
-          <textarea name="reason" className="form-control" value={formData.reason} onChange={handleChange} required></textarea>
-        </div>
+        <label>Reason for Request</label>
+        <textarea name="reason" value={formData.reason} onChange={handleChange} required></textarea>
 
-        <button type="submit" className="btn btn-danger">Submit Request</button>
+        <button type="submit">Submit Request</button>
       </form>
     </div>
   );
