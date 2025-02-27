@@ -1,14 +1,6 @@
-import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const NavBar = () => {
-	const [user, setUser] = useState(null) //Default null
-	useEffect(function() {
-		const storedUser = localStorage.getItem("user"); //Check if user is set
-		if (storedUser) {
-			setUser(JSON.parse(storedUser));
-		}//Otherwise don't set the user - no user logged in.
-	}, [])
+const NavBar = ({ user, setUser }) => {
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light bg-light mb-4">
 			<div className="container-fluid">

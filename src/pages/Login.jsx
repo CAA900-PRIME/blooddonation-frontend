@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+const Login = ({ setUser }) => { //setUser coming from the routes
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const navigate = useNavigate();
@@ -15,10 +15,15 @@ function Login() {
 		});
 
 		if (response.ok) {
-			console.log(response.json)
-			// localStorage.setItem()
+			// Parse to json
+			const data = await response.json();
+			console.log(data.message);
+			console.log(data.user);
+			localStorage.setItem("user", JSON.stringify(data.user)) //Will have to use const user = JSON.parse(localStorage.getItem("user")); To get the user account
+			setUser(data.user); //Setting the user once loggedin
 			navigate("/");
 		} else {
+			//Need to replace it with a nice alert template using bootstrap
 			alert("Login failed");
 		}
 	};

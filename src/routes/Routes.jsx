@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import Home from "../pages/Home";
 import Login from "../pages/Login"
@@ -7,14 +6,7 @@ import Dashboard from "../pages/Dashboard"
 import InfoPage from "../pages/InfoPage"
 import BloodRequest from "../pages/BloodRequest"
 
-const AppRoutes = () => {
-	const [user, setUser] = useState(null);
-	useEffect(() => {
-		const storedUser = localStorage.getItem("user");
-		if (storedUser) {
-			setUser(JSON.parse(storedUser));
-		}
-	}, []);
+const AppRoutes = ({ user, setUser }) => {
 	return (
 		<Routes>
 			<Route path="/login" element={<Login setUser={setUser} />} />
