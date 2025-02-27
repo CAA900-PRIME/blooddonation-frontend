@@ -5,6 +5,7 @@ function CreateAccount() {
 	const [formData, setFormData] = useState({
 		email: "",
 		confirmEmail: "",
+		username: "",
 		firstName: "",
 		lastName: "",
 		dob: "",
@@ -30,6 +31,7 @@ function CreateAccount() {
 		const {
 			email,
 			confirmEmail,
+			username,
 			firstName,
 			lastName,
 			dob,
@@ -40,7 +42,7 @@ function CreateAccount() {
 		} = formData;
 
 		// Validation
-		if (!email || !confirmEmail || !firstName || !lastName || !dob || !postalCode || !phoneNumber || !password || !confirmPassword) {
+		if (!email || !confirmEmail || !firstName || !lastName || !dob || !postalCode || !phoneNumber || !password || !confirmPassword || !username) {
 			setError("Please fill out all required fields.");
 			return;
 		}
@@ -66,6 +68,7 @@ function CreateAccount() {
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({
 					email,
+					username,
 					firstName,
 					lastName,
 					dob,
@@ -79,6 +82,7 @@ function CreateAccount() {
 				navigate("/login");
 			} else {
 				const errorData = await response.json();
+				console.log(errorData)
 				setError(errorData.message || "Account creation failed.");
 			}
 		} catch (error) {
@@ -103,6 +107,14 @@ function CreateAccount() {
 				name="confirmEmail"
 				placeholder="Confirm email address"
 				value={formData.confirmEmail}
+				onChange={handleChange}
+				required
+			/>
+			<input
+				type="text"
+				name="username"
+				placeholder="Username"
+				value={formData.username}
 				onChange={handleChange}
 				required
 			/>
