@@ -1,18 +1,19 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CreateAccount() {
+function Signup() {
   const [formData, setFormData] = useState({
     email: "",
-    confirmEmail: "",
-    firstName: "",
-    lastName: "",
-    dob: "",
-    postalCode: "",
-    phoneNumber: "",
+    username: "",
     password: "",
     confirmPassword: "",
+    phoneNumber: "",
+    homeAddress: "",
+    city: "",
+    country: "",
+    postalCode: "",
   });
+
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState("");
   const navigate = useNavigate();
@@ -21,37 +22,11 @@ function CreateAccount() {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const validatePassword = (password) => {
-    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return passwordRegex.test(password);
-  };
-
   const handleCreateAccount = async () => {
-    const {
-      email,
-      confirmEmail,
-      firstName,
-      lastName,
-      dob,
-      postalCode,
-      phoneNumber,
-      password,
-      confirmPassword,
-    } = formData;
+    const { email, username, password, confirmPassword, phoneNumber, homeAddress, city, country, postalCode } = formData;
 
-    // Validation
-    if (!email || !confirmEmail || !firstName || !lastName || !dob || !postalCode || !phoneNumber || !password || !confirmPassword) {
+    if (!email || !username || !password || !confirmPassword || !phoneNumber || !homeAddress || !city || !country || !postalCode) {
       setError("Please fill out all required fields.");
-      return;
-    }
-    if (email !== confirmEmail) {
-      setError("Email addresses do not match.");
-      return;
-    }
-    if (!validatePassword(password)) {
-      setError(
-        "Password must be at least 8 characters long, contain one uppercase letter, one lowercase letter, one number, and no spaces or invalid characters."
-      );
       return;
     }
     if (password !== confirmPassword) {
@@ -64,15 +39,7 @@ function CreateAccount() {
       const response = await fetch("http://localhost:3000/api/create-account", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email,
-          firstName,
-          lastName,
-          dob,
-          postalCode,
-          phoneNumber,
-          password,
-        }),
+        body: JSON.stringify({ email, username, password, phoneNumber, homeAddress, city, country, postalCode }),
       });
 
       if (response.ok) {
@@ -87,98 +54,77 @@ function CreateAccount() {
   };
 
   return (
-    <div style={{ maxWidth: "500px", margin: "0 auto", padding: "20px" }}>
-      <h2>Create an Account</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      <input
-        type="email"
-        name="email"
-        placeholder="Email address (this will be your username)"
-        value={formData.email}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="email"
-        name="confirmEmail"
-        placeholder="Confirm email address"
-        value={formData.confirmEmail}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="firstName"
-        placeholder="First name (as shown on your government-issued ID)"
-        value={formData.firstName}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="lastName"
-        placeholder="Last name (as shown on your government-issued ID)"
-        value={formData.lastName}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="date"
-        name="dob"
-        placeholder="Date of birth (MM/DD/YYYY)"
-        value={formData.dob}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="text"
-        name="postalCode"
-        placeholder="Postal code"
-        value={formData.postalCode}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="tel"
-        name="phoneNumber"
-        placeholder="Phone number"
-        value={formData.phoneNumber}
-        onChange={handleChange}
-        required
-      />
-      <div>
-        <input
-          type={showPassword ? "text" : "password"}
-          name="password"
-          placeholder="Password"
-          value={formData.password}
-          onChange={handleChange}
-          required
-        />
-        <button
-          type="button"
-          onClick={() => setShowPassword(!showPassword)}
-          style={{ marginLeft: "10px" }}
-        >
-          {showPassword ? "Hide" : "Show"}
-        </button>
+    <div className="signup-container">
+      <div className="signup-form">
+        <h2 className="text-center mb-3">Create an account</h2>
+        <p className="text-muted text-center">To continue, fill out your personal info</p>
+        {error && <p className="text-danger text-center">{error}</p>}
+
+        <form>
+          <div className="mb-3">
+            <label>Email</label>
+            <input type="email" name="email" className="form-control" placeholder="email@gmail.com" value={formData.email} onChange={handleChange} required />
+          </div>
+
+          <div className="mb-3">
+            <label>Username</label>
+            <input type="text" name="username" className="form-control" placeholder="best_wizard421" value={formData.username} onChange={handleChange} required />
+          </div>
+
+          <div className="mb-3">
+            <label>Password</label>
+            <div className="input-group">
+              <input type={showPassword ? "text" : "password"} name="password" className="form-control" placeholder="**********" value={formData.password} onChange={handleChange} required />
+              <button type="button" className="btn btn-outline-secondary" onClick={() => setShowPassword(!showPassword)}>
+                {showPassword ? "🙈" : "👁️"}
+              </button>
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label>Repeat Password</label>
+            <div className="input-group">
+              <input type={showPassword ? "text" : "password"} name="confirmPassword" className="form-control" placeholder="**********" value={formData.confirmPassword} onChange={handleChange} required />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label>Phone Number</label>
+            <input type="tel" name="phoneNumber" className="form-control" placeholder="+1234567890" value={formData.phoneNumber} onChange={handleChange} required />
+          </div>
+
+          <div className="mb-3">
+            <label>Home Address</label>
+            <input type="text" name="homeAddress" className="form-control" placeholder="123 Main St" value={formData.homeAddress} onChange={handleChange} required />
+          </div>
+
+          <div className="row">
+            <div className="col-md-6 mb-3">
+              <label>City</label>
+              <input type="text" name="city" className="form-control" placeholder="New York" value={formData.city} onChange={handleChange} required />
+            </div>
+            <div className="col-md-6 mb-3">
+              <label>Country</label>
+              <input type="text" name="country" className="form-control" placeholder="USA" value={formData.country} onChange={handleChange} required />
+            </div>
+          </div>
+
+          <div className="mb-3">
+            <label>Postal Code</label>
+            <input type="text" name="postalCode" className="form-control" placeholder="10001" value={formData.postalCode} onChange={handleChange} required />
+          </div>
+
+          <p className="small text-muted text-center">
+            By clicking Sign up, you agree to our <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>.
+          </p>
+
+          <button type="button" className="signup-btn" onClick={handleCreateAccount}>
+            Sign up
+          </button>
+        </form>
       </div>
-      <div>
-        <input
-          type={showPassword ? "text" : "password"}
-          name="confirmPassword"
-          placeholder="Confirm password"
-          value={formData.confirmPassword}
-          onChange={handleChange}
-          required
-        />
-      </div>
-      <p style={{ fontSize: "0.9em", color: "gray" }}>
-        Passwords must contain: Minimum 8 characters, at least one uppercase letter, one lowercase letter, one number, no spaces, and no invalid characters.
-      </p>
-      <button onClick={handleCreateAccount}>Create Account</button>
     </div>
   );
 }
 
-export default CreateAccount;
+export default Signup;

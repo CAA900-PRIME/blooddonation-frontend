@@ -5,6 +5,7 @@
   text-align: center;
 }
 
+/* Logo Styling */
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -18,6 +19,7 @@
   filter: drop-shadow(0 0 2em #61dafbaa);
 }
 
+/* Animation */
 @keyframes logo-spin {
   from {
     transform: rotate(0deg);
@@ -33,10 +35,70 @@
   }
 }
 
+/* Card */
 .card {
   padding: 2em;
 }
 
-.read-the-docs {
-  color: #888;
+/* Set the primary theme color to red */
+:root {
+  --primary-color: #d52b3e; /* Red color */
+}
+
+/* Change the background to white (no red background for the page) */
+body {
+  background-color: #f8f9fa; /* Light gray or white */
+  font-family: "Arial", sans-serif;
+  color: black; /* Keep text color readable */
+}
+
+/* Navbar Styling */
+.navbar {
+  background: white;
+  padding: 15px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.navbar a {
+  color: black !important;
+}
+
+/* Signup Page Styling */
+.signup-container {
+  max-width: 600px;
+  margin: 50px auto;
+  background: white;
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Form Styling */
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Input Fields */
+.signup-form input {
+  border-radius: 8px;
+}
+
+/* Signup Button */
+.signup-btn {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  background: var(--primary-color); /* Red button */
+  color: white;
+  border: none;
+  border-radius: 8px;
+  transition: 0.3s;
+}
+
+.signup-btn:hover {
+  background: #b22234; /* Darker red */
 }
