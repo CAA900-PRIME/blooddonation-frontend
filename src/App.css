@@ -102,3 +102,12 @@ body {
 .signup-btn:hover {
   background: #b22234; /* Darker red */
 }
+
+/* SignupImage */
+
+.signup-image {
+  flex: 1;
+  background: url("../assets/blood-donation.jpg") no-repeat center center/cover;
+  position: relative;
+}
+

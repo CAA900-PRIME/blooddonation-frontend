@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "../App.css"; // Ensure styles are applied
+import bloodDonationImage from "/src/assets/blood-donation.jpg"; // Import the image
 
 function Signup() {
   const [formData, setFormData] = useState({
@@ -55,6 +57,7 @@ function Signup() {
 
   return (
     <div className="signup-container">
+      {/* Left Side - Form */}
       <div className="signup-form">
         <h2 className="text-center mb-3">Create an account</h2>
         <p className="text-muted text-center">To continue, fill out your personal info</p>
@@ -122,6 +125,11 @@ function Signup() {
             Sign up
           </button>
         </form>
+      </div>
+
+      {/* Right Side - Image */}
+      <div className="signup-image">
+        <img src={bloodDonationImage} alt="Blood Donation" className="img-fluid" />
       </div>
     </div>
   );
