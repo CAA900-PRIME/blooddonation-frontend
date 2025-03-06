@@ -37,9 +37,9 @@ const Login = ({ setUser }) => {
 
 				{/* Right Side - Login Form */}
 				<div className="col-md-6 bg-white p-5">
-					<h4 className="mb-3">Hello! <span className="text-primary">Good Morning</span></h4>
+					<h4 className="mb-3">Hello! <span className="text-danger">Good Morning</span></h4>
 					<h5 className="mb-4">
-						<span className="text-primary fw-bold">Login</span> Your Account
+						<span className="text-danger fw-bold">Login</span> Your Account
 					</h5>
 
 					{/* Email Input */}
@@ -70,19 +70,19 @@ const Login = ({ setUser }) => {
 							<input type="checkbox" id="rememberMe" className="me-2" />
 							<label htmlFor="rememberMe">Remember</label>
 						</div>
-						<button className="btn btn-link text-decoration-none" onClick={() => navigate("/reset-password")}>
+						<button className="btn btn-link text-decoration-none text-danger" onClick={() => navigate("/reset-password")}>
 							Forgot Password?
 						</button>
 					</div>
 
 					{/* Login Button */}
-					<button className="btn btn-primary w-100 py-2" onClick={handleLogin}>
+					<button className="btn btn-danger w-100 py-2" onClick={handleLogin}>
 						SUBMIT
 					</button>
 
 					{/* Create Account */}
 					<div className="text-center mt-3">
-						<button className="btn btn-link text-decoration-none">Create Account</button>
+						<button className="btn btn-link text-decoration-none text-danger">Create Account</button>
 					</div>
 				</div>
 			</div>
@@ -91,10 +91,10 @@ const Login = ({ setUser }) => {
 			<style>
 				{`
 					.bg-gradient {
-						background: linear-gradient(to right, #6a11cb, #2575fc);
+						background: linear-gradient(to right, #8B0000, #FF4500);
 					}
 					.welcome-section {
-						background: linear-gradient(to right, #6a11cb, #2575fc);
+						background: linear-gradient(to right, #8B0000, #FF4500);
 						color: white;
 						text-align: center;
 					}
