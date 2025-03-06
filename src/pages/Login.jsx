@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const Login = ({ setUser }) => { //setUser coming from the routes
+const Login = ({ setUser }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const navigate = useNavigate();
@@ -16,45 +17,91 @@ const Login = ({ setUser }) => { //setUser coming from the routes
 
 		if (response.ok) {
 			const data = await response.json();
-			console.log(data.message);
-			console.log(data.user);
-			localStorage.setItem("user", JSON.stringify(data.user)); 
-			setUser(data.user); 
+			localStorage.setItem("user", JSON.stringify(data.user));
+			setUser(data.user);
 			navigate("/");
 		} else {
-			alert("Login failed"); // Replace with a Bootstrap alert
+			alert("Login failed");
 		}
 	};
 
 	return (
-		<div className="container mt-4">
-			<h2>Login</h2>
-			<input 
-				type="email" 
-				className="form-control mb-2"
-				placeholder="Email" 
-				value={email} 
-				onChange={(e) => setEmail(e.target.value)} 
-			/>
-			<input 
-				type="password" 
-				className="form-control mb-2"
-				placeholder="Password" 
-				value={password} 
-				onChange={(e) => setPassword(e.target.value)} 
-			/>
-			<button className="btn btn-primary w-100" onClick={handleLogin}>Login</button>
-			
-			<div className="text-center mt-3">
-				<button 
-					className="btn btn-link" 
-					onClick={() => navigate("/reset-password")}
-				>
-					Forgot Password?
-				</button>
+		<div className="container-fluid d-flex align-items-center justify-content-center min-vh-100 bg-gradient">
+			<div className="row w-75 shadow-lg rounded-4 overflow-hidden">
+				{/* Left Side - Welcome Section */}
+				<div className="col-md-6 d-flex flex-column align-items-center justify-content-center text-white p-4 welcome-section">
+					<h1 className="fw-bold">Welcome Page</h1>
+					<p className="text-center">Sign In To Your Account</p>
+					<p className="mt-auto mb-0">www.blooddonation.ca</p>
+				</div>
+
+				{/* Right Side - Login Form */}
+				<div className="col-md-6 bg-white p-5">
+					<h4 className="mb-3">Hello! <span className="text-primary">Good Morning</span></h4>
+					<h5 className="mb-4">
+						<span className="text-primary fw-bold">Login</span> Your Account
+					</h5>
+
+					{/* Email Input */}
+					<div className="mb-3">
+						<input
+							type="email"
+							className="form-control"
+							placeholder="Email Address"
+							value={email}
+							onChange={(e) => setEmail(e.target.value)}
+						/>
+					</div>
+
+					{/* Password Input */}
+					<div className="mb-3">
+						<input
+							type="password"
+							className="form-control"
+							placeholder="Password"
+							value={password}
+							onChange={(e) => setPassword(e.target.value)}
+						/>
+					</div>
+
+					{/* Remember Me & Forgot Password */}
+					<div className="d-flex justify-content-between align-items-center mb-4">
+						<div>
+							<input type="checkbox" id="rememberMe" className="me-2" />
+							<label htmlFor="rememberMe">Remember</label>
+						</div>
+						<button className="btn btn-link text-decoration-none" onClick={() => navigate("/reset-password")}>
+							Forgot Password?
+						</button>
+					</div>
+
+					{/* Login Button */}
+					<button className="btn btn-primary w-100 py-2" onClick={handleLogin}>
+						SUBMIT
+					</button>
+
+					{/* Create Account */}
+					<div className="text-center mt-3">
+						<button className="btn btn-link text-decoration-none">Create Account</button>
+					</div>
+				</div>
 			</div>
+
+			{/* Custom Styles */}
+			<style>
+				{`
+					.bg-gradient {
+						background: linear-gradient(to right, #6a11cb, #2575fc);
+					}
+					.welcome-section {
+						background: linear-gradient(to right, #6a11cb, #2575fc);
+						color: white;
+						text-align: center;
+					}
+				`}
+			</style>
 		</div>
 	);
-}
+};
 
 export default Login;
