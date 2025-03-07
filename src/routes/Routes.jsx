@@ -11,6 +11,7 @@ const AppRoutes = ({ user, setUser }) => {
 		<Routes>
 			<Route path="/login" element={<Login setUser={setUser} />} />
 			<Route path="/signup" element={<Signup />} />
+			{/* <Route path="/dashboard" element={<Dashboard />} /> */}
 			<Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Login setUser={setUser} />} />
 			<Route path="/info" element={<InfoPage />} />
 			<Route path="/home" element={<Home />} />
