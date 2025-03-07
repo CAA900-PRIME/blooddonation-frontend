@@ -1,67 +1,115 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 const Sidebar = () => (
-  <div className="sidebar bg-dark text-white vh-100 p-3 position-fixed" style={{ width: "250px" }}>
-    <h2 className="mb-4">Dashboard</h2>
+  <div className="sidebar bg-danger text-white vh-100 p-3 position-fixed shadow" style={{ width: "260px" }}>
+    <h2 className="mb-4 text-center fw-bold">Dashboard</h2>
     <ul className="nav flex-column">
-      <li className="nav-item mb-2">
-        <Link to="/dashboard" className="nav-link text-white"><FiHome /> Dashboard</Link>
+      <li className="nav-item mb-3">
+        <Link to="/dashboard" className="nav-link text-white"><FiHome className="me-2" /> Dashboard</Link>
       </li>
-      <li className="nav-item mb-2">
-        <Link to="/users" className="nav-link text-white"><FiUser /> Users</Link>
+      <li className="nav-item mb-3">
+        <Link to="/users" className="nav-link text-white"><FiUser className="me-2" /> Users</Link>
       </li>
-      <li className="nav-item mb-2">
-        <Link to="/donations" className="nav-link text-white"><FiHeart /> Donations</Link>
+      <li className="nav-item mb-3">
+        <Link to="/donations" className="nav-link text-white"><FiHeart className="me-2" /> Donations</Link>
       </li>
-      <li className="nav-item mb-2">
-        <Link to="/info" className="nav-link text-white"><FiBarChart2 /> Info</Link>
+      <li className="nav-item">
+        <Link to="/info" className="nav-link text-white"><FiBarChart2 className="me-2" /> Info</Link>
       </li>
     </ul>
   </div>
 );
 
 const Navbar = () => (
-  <div className="navbar bg-light p-3" style={{ marginLeft: "250px" }}>
-    <h2 className="d-inline-block">Welcome to the Dashboard</h2>
+  <div className="navbar bg-white shadow p-3" style={{ marginLeft: "260px" }}>
+    <h2 className="d-inline-block text-danger fw-bold">Blood Donation Dashboard</h2>
     <div className="float-end">
-      <button className="btn btn-warning me-2">🔔 Notifications</button>
-      <button className="btn btn-secondary">👤 Profile</button>
+      <button className="btn btn-light border me-2">🔔 Notifications</button>
+      <button className="btn btn-danger">👤 Profile</button>
     </div>
   </div>
 );
 
 const Dashboard = () => {
+  const [bloodRequests, setBloodRequests] = useState([]);
+
+  useEffect(() => {
+    // Simulated fetch request (Replace with actual API call later)
+    setBloodRequests([
+      { id: 1, fullName: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
+      { id: 2, fullName: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
+      { id: 3, fullName: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
+    ]);
+  }, []);
+
   return (
     <div className="d-flex">
       <Sidebar />
-      <div className="content p-4 w-100" style={{ marginLeft: "250px" }}>
+      <div className="content p-4 w-75" style={{ marginLeft: "260px" }}>
         <Navbar />
         <div className="mt-4">
-          <h3 className="text-center">Dashboard Overview</h3>
+          <h3 className="text-center text-danger fw-bold">Dashboard Overview</h3>
           <div className="row mt-3">
             <div className="col-md-4">
-              <div className="card p-3 text-center">
+              <div className="card text-center shadow border-0 bg-danger text-white p-3">
                 <h5>Total Donations</h5>
-                <p className="fs-4">120</p>
+                <p className="fs-4 fw-bold">120</p>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="card p-3 text-center">
+              <div className="card text-center shadow border-0 bg-danger text-white p-3">
                 <h5>Active Users</h5>
-                <p className="fs-4">35</p>
+                <p className="fs-4 fw-bold">35</p>
               </div>
             </div>
             <div className="col-md-4">
-              <div className="card p-3 text-center">
+              <div className="card text-center shadow border-0 bg-danger text-white p-3">
                 <h5>Pending Requests</h5>
-                <p className="fs-4">10</p>
+                <p className="fs-4 fw-bold">10</p>
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      {/* Right Sidebar - Blood Requests List */}
+      <div className="p-4 bg-light w-25 vh-100 overflow-auto border-start shadow-sm">
+        <h4 className="text-center text-danger fw-bold">Blood Requests</h4>
+        <ul className="list-group">
+          {bloodRequests.length > 0 ? (
+            bloodRequests.map((request) => (
+              <li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
+                <strong className="text-danger">{request.fullName}</strong> 
+                <span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
+                <span>City: {request.city}</span>
+                <span>Hospital: {request.hospital}</span>
+              </li>
+            ))
+          ) : (
+            <p className="text-center">No blood requests available.</p>
+          )}
+        </ul>
+      </div>
+
+      {/* Custom Styles */}
+      <style>
+        {`
+          body {
+            background: linear-gradient(to right,rgb(255, 255, 255),rgb(254, 232, 227));
+          }
+          .card:hover {
+            transform: scale(1.05);
+            transition: 0.3s ease-in-out;
+          }
+          .list-group-item:hover {
+            background: #f8d7da;
+            transition: 0.3s;
+          }
+        `}
+      </style>
     </div>
   );
 };
