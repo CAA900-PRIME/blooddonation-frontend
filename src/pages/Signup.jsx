@@ -5,8 +5,10 @@ import signupImage from "../assets/signup_image.jpg"; // Import the image
 
 const Signup = () => {
   const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    dob: "",
     email: "",
-    username: "",
     password: "",
     confirmPassword: "",
     phoneNumber: "",
@@ -25,9 +27,9 @@ const Signup = () => {
   };
 
   const handleCreateAccount = async () => {
-    const { email, username, password, confirmPassword, phoneNumber, homeAddress, city, country, postalCode } = formData;
+    const { firstName, lastName, dob, email, password, confirmPassword, phoneNumber, homeAddress, city, country, postalCode } = formData;
 
-    if (!email || !username || !password || !confirmPassword || !phoneNumber || !homeAddress || !city || !country || !postalCode) {
+    if (!firstName || !lastName || !dob || !email || !password || !confirmPassword || !phoneNumber || !homeAddress || !city || !country || !postalCode) {
       setError("Please fill out all required fields.");
       return;
     }
@@ -38,10 +40,10 @@ const Signup = () => {
 
     setError("");
     try {
-      const response = await fetch("http://localhost:3000/api/create-account", {
+      const response = await fetch("http://localhost:3000/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, username, password, phoneNumber, homeAddress, city, country, postalCode }),
+        body: JSON.stringify({ firstName, lastName, dob, email, password, phoneNumber, homeAddress, city, country, postalCode }),
       });
 
       if (response.ok) {
@@ -57,15 +59,15 @@ const Signup = () => {
 
   return (
     <div className="container-fluid d-flex align-items-center justify-content-center vh-100">
-      <div className="row w-75 shadow-lg rounded-4 overflow-hidden signup-container">
-        {/* Left Side - Image Section */}
-        <div className="col-md-5 d-flex align-items-center justify-content-center text-white p-4 image-section">
-          <img src={signupImage} alt="Signup" className="img-fluid w-100 h-100 object-fit-cover" />
+      <div className="row shadow-lg rounded-4 signup-container">
+        {/* Left Side - Full Height Image */}
+        <div className="col-md-6 p-0 d-flex align-items-center image-section">
+          <img src={signupImage} alt="Signup" className="img-fluid image-full" />
         </div>
 
         {/* Right Side - Signup Form */}
-        <div className="col-md-7 bg-white p-4 d-flex flex-column justify-content-center">
-          <h5 className="mb-2">
+        <div className="col-md-6 bg-white d-flex flex-column justify-content-center form-section p-4">
+          <h5 className="mb-3 text-center">
             <span className="text-danger fw-bold">Sign Up</span> for a New Account
           </h5>
 
@@ -73,16 +75,24 @@ const Signup = () => {
 
           <form>
             <div className="row">
-              <div className="col-md-6 mb-2">
-                <input type="email" name="email" className="form-control" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
+              <div className="col-md-6 mb-3">
+                <input type="text" name="firstName" className="form-control" placeholder="First Name" value={formData.firstName} onChange={handleChange} required />
               </div>
-              <div className="col-md-6 mb-2">
-                <input type="text" name="username" className="form-control" placeholder="Username" value={formData.username} onChange={handleChange} required />
+              <div className="col-md-6 mb-3">
+                <input type="text" name="lastName" className="form-control" placeholder="Last Name" value={formData.lastName} onChange={handleChange} required />
               </div>
             </div>
 
+            <div className="mb-3">
+              <input type="date" name="dob" className="form-control" value={formData.dob} onChange={handleChange} required />
+            </div>
+
+            <div className="mb-3">
+              <input type="email" name="email" className="form-control" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
+            </div>
+
             <div className="row">
-              <div className="col-md-6 mb-2">
+              <div className="col-md-6 mb-3">
                 <div className="input-group">
                   <input type={showPassword ? "text" : "password"} name="password" className="form-control" placeholder="Password" value={formData.password} onChange={handleChange} required />
                   <button type="button" className="btn btn-outline-danger" onClick={() => setShowPassword(!showPassword)}>
@@ -90,30 +100,29 @@ const Signup = () => {
                   </button>
                 </div>
               </div>
-              <div className="col-md-6 mb-2">
+              <div className="col-md-6 mb-3">
                 <input type={showPassword ? "text" : "password"} name="confirmPassword" className="form-control" placeholder="Confirm Password" value={formData.confirmPassword} onChange={handleChange} required />
               </div>
             </div>
 
-            <div className="row">
-              <div className="col-md-6 mb-2">
-                <input type="tel" name="phoneNumber" className="form-control" placeholder="Phone Number" value={formData.phoneNumber} onChange={handleChange} required />
-              </div>
-              <div className="col-md-6 mb-2">
-                <input type="text" name="homeAddress" className="form-control" placeholder="Home Address" value={formData.homeAddress} onChange={handleChange} required />
-              </div>
+            <div className="mb-3">
+              <input type="tel" name="phoneNumber" className="form-control" placeholder="Phone Number" value={formData.phoneNumber} onChange={handleChange} required />
+            </div>
+
+            <div className="mb-3">
+              <input type="text" name="homeAddress" className="form-control" placeholder="Home Address" value={formData.homeAddress} onChange={handleChange} required />
             </div>
 
             <div className="row">
-              <div className="col-md-6 mb-2">
+              <div className="col-md-6 mb-3">
                 <input type="text" name="city" className="form-control" placeholder="City" value={formData.city} onChange={handleChange} required />
               </div>
-              <div className="col-md-6 mb-2">
+              <div className="col-md-6 mb-3">
                 <input type="text" name="country" className="form-control" placeholder="Country" value={formData.country} onChange={handleChange} required />
               </div>
             </div>
 
-            <div className="mb-2">
+            <div className="mb-3">
               <input type="text" name="postalCode" className="form-control" placeholder="Postal Code" value={formData.postalCode} onChange={handleChange} required />
             </div>
 
@@ -137,37 +146,31 @@ const Signup = () => {
         {`
           .signup-container {
             height: 90vh;
-            max-width: 900px;
+            max-width: 1100px;
+            display: flex;
+            align-items: center;
           }
           .image-section {
+            height: 100%;
             padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
-          .image-section img {
+          .image-full {
+            width: 100%;
+            height: 100%;
             object-fit: cover;
+            border-top-left-radius: 10px;
+            border-bottom-left-radius: 10px;
+          }
+          .form-section {
+            max-width: 600px;
+            margin: auto;
           }
           .form-control {
             font-size: 0.9rem;
             padding: 0.5rem;
-            border: 1px solid #ccc; /* Neutral border */
-          }
-          .form-control:focus {
-            border-color: #D32F2F; /* Only red when focused */
-            box-shadow: 0 0 5px rgba(211, 47, 47, 0.5);
-          }
-          .btn-danger {
-            background-color: #D32F2F;
-            border: none;
-          }
-          .btn-danger:hover {
-            background-color: #B71C1C;
-          }
-          .btn-outline-danger {
-            border-color: #D32F2F;
-            color: #D32F2F;
-          }
-          .btn-outline-danger:hover {
-            background-color: #D32F2F;
-            color: white;
           }
         `}
       </style>
