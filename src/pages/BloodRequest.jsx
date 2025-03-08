@@ -1,65 +1,141 @@
 import React, { useState } from "react";
-import "../styles/BloodRequest.css"; // Import the new CSS file
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FaTint, FaHospital, FaCity, FaPhone, FaGlobe, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 
-function BloodRequest() {
+function BloodRequest({ user }) { // user prop is passed to get requester_id
 	const [formData, setFormData] = useState({
-		fullName: "",
-		email: "",
-		phone: "",
-		bloodGroup: "",
+		requester_id: user?.id || "", // Auto-filled if user is logged in
+		blood_type: "",
+		hospital_name: "",
+		hospital_address: "",
+		country: "",
 		city: "",
-		hospital: "",
-		reason: "",
+		contact_phone_number: "",
+		status: "Pending", // Default status
 	});
+
+	const [loading, setLoading] = useState(false); // Loading effect on submit
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
 
-	const handleSubmit = (e) => {
+	const handleSubmit = async (e) => {
 		e.preventDefault();
-		//TODO: Will use the data convert it to json and create http request to dispatch the data to the backend
-		console.log("Blood Request Submitted:", formData);
-		alert("Your blood request has been submitted successfully!");
+		setLoading(true);
+
+		const requestData = JSON.stringify(formData);
+
+		try {
+			const response = await fetch("http://localhost:3000/api/blood-requests", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: requestData,
+			});
+
+			if (response.ok) {
+				alert("Your blood request has been submitted successfully!");
+				console.log("Blood Request Submitted:", formData);
+			} else {
+				alert("Failed to submit request. Please try again.");
+			}
+		} catch (error) {
+			console.error("Error submitting blood request:", error);
+		}
+
+		setLoading(false);
 	};
 
 	return (
-		<div className="blood-request-container">
-			<h2>Request Blood</h2>
-			<form className="blood-request-form" onSubmit={handleSubmit}>
-				<label>Full Name</label>
-				<input type="text" name="fullName" value={formData.fullName} onChange={handleChange} required />
+		<div className="container d-flex align-items-center justify-content-center min-vh-100">
+			<div className="col-md-8">
+				<div className="card shadow-lg p-4">
+					<h2 className="text-center text-danger mb-4">Request Blood</h2>
+					<form onSubmit={handleSubmit}>
+						
+						{/* Requester ID (Auto-filled) */}
+						<div className="mb-3">
+							<label className="form-label">Requester ID</label>
+							<div className="input-group">
+								<span className="input-group-text"><FaUser /></span>
+								<input type="text" className="form-control" name="requester_id" value={formData.requester_id} disabled />
+							</div>
+						</div>
 
-				<label>Email</label>
-				<input type="email" name="email" value={formData.email} onChange={handleChange} required />
+						{/* Blood Type */}
+						<div className="mb-3">
+							<label className="form-label">Blood Type</label>
+							<div className="input-group">
+								<span className="input-group-text"><FaTint /></span>
+								<select className="form-select" name="blood_type" value={formData.blood_type} onChange={handleChange} required>
+									<option value="">Select Blood Type</option>
+									<option value="A+">A+</option>
+									<option value="A-">A-</option>
+									<option value="B+">B+</option>
+									<option value="B-">B-</option>
+									<option value="O+">O+</option>
+									<option value="O-">O-</option>
+									<option value="AB+">AB+</option>
+									<option value="AB-">AB-</option>
+								</select>
+							</div>
+						</div>
 
-				<label>Phone Number</label>
-				<input type="text" name="phone" value={formData.phone} onChange={handleChange} required />
+						{/* Hospital Name */}
+						<div className="mb-3">
+							<label className="form-label">Hospital Name</label>
+							<div className="input-group">
+								<span className="input-group-text"><FaHospital /></span>
+								<input type="text" className="form-control" name="hospital_name" value={formData.hospital_name} onChange={handleChange} required />
+							</div>
+						</div>
 
-				<label>Blood Group</label>
-				<select name="bloodGroup" value={formData.bloodGroup} onChange={handleChange} required>
-					<option value="">Select Blood Group</option>
-					<option value="A+">A+</option>
-					<option value="A-">A-</option>
-					<option value="B+">B+</option>
-					<option value="B-">B-</option>
-					<option value="O+">O+</option>
-					<option value="O-">O-</option>
-					<option value="AB+">AB+</option>
-					<option value="AB-">AB-</option>
-				</select>
+						{/* Hospital Address */}
+						<div className="mb-3">
+							<label className="form-label">Hospital Address</label>
+							<div className="input-group">
+								<span className="input-group-text"><FaMapMarkerAlt /></span>
+								<input type="text" className="form-control" name="hospital_address" value={formData.hospital_address} onChange={handleChange} required />
+							</div>
+						</div>
 
-				<label>City</label>
-				<input type="text" name="city" value={formData.city} onChange={handleChange} required />
+						{/* Country */}
+						<div className="mb-3">
+							<label className="form-label">Country</label>
+							<div className="input-group">
+								<span className="input-group-text"><FaGlobe /></span>
+								<input type="text" className="form-control" name="country" value={formData.country} onChange={handleChange} required />
+							</div>
+						</div>
 
-				<label>Hospital Name</label>
-				<input type="text" name="hospital" value={formData.hospital} onChange={handleChange} required />
+						{/* City */}
+						<div className="mb-3">
+							<label className="form-label">City</label>
+							<div className="input-group">
+								<span className="input-group-text"><FaCity /></span>
+								<input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} required />
+							</div>
+						</div>
 
-				<label>Reason for Request</label>
-				<textarea name="reason" value={formData.reason} onChange={handleChange} required></textarea>
+						{/* Contact Phone Number */}
+						<div className="mb-3">
+							<label className="form-label">Contact Phone Number</label>
+							<div className="input-group">
+								<span className="input-group-text"><FaPhone /></span>
+								<input type="text" className="form-control" name="contact_phone_number" value={formData.contact_phone_number} onChange={handleChange} required />
+							</div>
+						</div>
 
-				<button type="submit">Submit Request</button>
-			</form>
+						{/* Submit Button */}
+						<div className="text-center">
+							<button type="submit" className="btn btn-danger w-100 py-2" disabled={loading}>
+								{loading ? "Submitting..." : "Submit Request"}
+							</button>
+						</div>
+
+					</form>
+				</div>
+			</div>
 		</div>
 	);
 }
