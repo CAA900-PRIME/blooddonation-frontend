@@ -11,11 +11,11 @@ const AppRoutes = ({ user, setUser }) => {
 		<Routes>
 			<Route path="/login" element={<Login setUser={setUser} />} />
 			<Route path="/signup" element={<Signup />} />
-			{/* <Route path="/dashboard" element={<Dashboard />} /> */}
+			{/* <Route path="/dashboard" element={<Dashboard />} /> and ensure to redirect user to login if their aren't logged in*/}
 			<Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Login setUser={setUser} />} />
-			<Route path="/info" element={<InfoPage />} />
+			<Route path="/info" element={user ? <InfoPage /> : <Login setUser={setUser} />} />
 			<Route path="/home" element={<Home />} />
-			<Route path="/blood-request" element={<BloodRequest />} />
+			<Route path="/blood-request" element={user ? <BloodRequest /> : <Login setUser={setUser} />} />
 			<Route path="/" element={<Home />} />
 		</Routes>
 	);
