@@ -12,23 +12,8 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 		country: user?.country || "",
 		city: user?.city || "",
 		contact_phone_number: user?.phone_number || "",
-		status: "Pending",
 		appointment: "", // Set default empty string to prevent undefined issue
 	});
-	useEffect(() => {
-		setFormData({
-			requester_id: user?.id || "", // Auto-filled if user is logged in
-			blood_type: "",
-			hospital_name: "",
-			hospital_address: "",
-			country: user?.country || "",
-			city: user?.city || "",
-			contact_phone_number: user?.phone_number || "",
-			status: "Pending", // Default status
-			appointment: "",
-		});
-	}, [user]);
-
 	// const handleChange = (e) => {
 	// 	setFormData({ ...formData, [e.target.name]: e.target.value });
 	// };
@@ -41,16 +26,25 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 	};
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		if (!formData.blood_type || !formData.hospital_name || !formData.contact_phone_number) {
+			alert("Please fill in all required fields.");
+			setLoading(false);
+			return;
+		}
 		setLoading(true);
-
 		const requestData = JSON.stringify(formData);
-
+		console.log(requestData)
 		try {
 			const response = await fetch("http://localhost:3000/api/app/create-application", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: requestData,
+				credentials: "include",
 			});
+
+			const responseData = await response.json();
+			console.log("Server response:", responseData);
 
 			if (response.ok) {
 				alert("Your blood request has been submitted successfully!");
@@ -138,7 +132,7 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 						<div className="mb-3">
 							<label className="form-label">Appointment</label>
 							<div className="input-group">
-								<input type="date" name="appointment" className="form-control" value={formData.appointment} onChange={handleChange} required />
+								<input type="datetime-local" name="appointment" className="form-control" value={formData.appointment} onChange={handleChange} required />
 							</div>
 						</div>
 

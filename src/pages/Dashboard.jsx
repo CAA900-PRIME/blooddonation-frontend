@@ -38,11 +38,25 @@ const Dashboard = () => {
 
 	useEffect(() => {
 		// Simulated fetch request (Replace with actual API call later)
+		const fetchBloodRequests = async () => {
+			try {
+				const response = await fetch("http://localhost:3000/api/users/get-applications", {
+					method: "GET",
+					credentials: "include",
+				});
+				const data = await response.json();
+				console.log(data)
+				setBloodRequests(data);
+			} catch (error) {
+				console.error("Error fetching blood requests:", error);
+			}
+		};
 		setBloodRequests([
-			{ id: 1, fullName: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
-			{ id: 2, fullName: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
-			{ id: 3, fullName: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
+			{ id: 1, username: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
+			{ id: 2, username: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
+			{ id: 3, username: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
 		]);
+		fetchBloodRequests();
 	}, []);
 
 	return (
@@ -82,7 +96,7 @@ const Dashboard = () => {
 					{bloodRequests.length > 0 ? (
 						bloodRequests.map((request) => (
 							<li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
-								<strong className="text-danger">{request.fullName}</strong>
+								<strong className="text-danger">{request.username}</strong>
 								<span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
 								<span>City: {request.city}</span>
 								<span>Hospital: {request.hospital}</span>
