@@ -16,7 +16,7 @@ function App() {
 	return (
 		<Router>
 			<NavBar user={user} setUser={setUser} />
-			<div className="container mt-4">
+			<div className="">
 				<AppRoutes user={user} setUser={setUser} />
 			</div>
 		</Router>
