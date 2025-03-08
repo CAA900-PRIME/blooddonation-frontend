@@ -15,7 +15,7 @@ const AppRoutes = ({ user, setUser }) => {
 			<Route path="/dashboard" element={user ? <Dashboard user={user} /> : <Login setUser={setUser} />} />
 			<Route path="/info" element={user ? <InfoPage /> : <Login setUser={setUser} />} />
 			<Route path="/home" element={<Home />} />
-			<Route path="/blood-request" element={user ? <BloodRequest /> : <Login setUser={setUser} />} />
+			<Route path="/blood-request" element={user ? <BloodRequest user={user} /> : <Login setUser={setUser} />} />
 			<Route path="/" element={<Home />} />
 		</Routes>
 	);

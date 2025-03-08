@@ -24,7 +24,7 @@ const Sidebar = () => (
 );
 
 const Navbar = () => (
-	<div className="navbar bg-white shadow p-3" style={{ marginLeft: "260px" }}>
+	<div className="navbar bg-white shadow p-3">
 		<h2 className="d-inline-block text-danger fw-bold">Blood Donation Dashboard</h2>
 		<div className="float-end">
 			<button className="btn btn-light border me-2">🔔 Notifications</button>
