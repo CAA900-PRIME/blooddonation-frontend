@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
 
 const Navbar = () => (
-	<div className="navbar bg-danger text-white shadow p-3 d-flex justify-content-between">
+	<nav className="navbar bg-danger text-white shadow p-3 d-flex justify-content-between">
 		<h2 className="fw-bold">Blood Donation Dashboard</h2>
 		<div>
 			<Link to="/dashboard" className="btn btn-light me-2"><FiHome className="me-1" /> Dashboard</Link>
@@ -13,7 +13,7 @@ const Navbar = () => (
 			<button className="btn btn-warning me-2">🔔 Notifications</button>
 			<button className="btn btn-light">👤 Profile</button>
 		</div>
-	</div>
+	</nav>
 );
 
 const Dashboard = () => {
@@ -67,73 +67,84 @@ const Dashboard = () => {
 	return (
 		<div>
 			<Navbar />
-			<div className="container mt-4">
-				<h3 className="text-center text-danger fw-bold">Dashboard Overview</h3>
-				<div className="row mt-3">
-					<div className="col-md-4">
-						<div className="card text-center shadow border-0 bg-danger text-white p-3">
-							<h5>Total Donations</h5>
-							<p className="fs-4 fw-bold">120</p>
+			<div className="container-fluid mt-4">
+				<div className="row">
+					{/* Main Dashboard Content */}
+					<div className="col-lg-9">
+						<h3 className="text-center text-danger fw-bold">Dashboard Overview</h3>
+						<div className="row mt-3">
+							<div className="col-md-4">
+								<div className="card text-center shadow border-0 bg-danger text-white p-3">
+									<h5>Total Donations</h5>
+									<p className="fs-4 fw-bold">120</p>
+								</div>
+							</div>
+							<div className="col-md-4">
+								<div className="card text-center shadow border-0 bg-danger text-white p-3">
+									<h5>Active Users</h5>
+									<p className="fs-4 fw-bold">35</p>
+								</div>
+							</div>
+							<div className="col-md-4">
+								<div className="card text-center shadow border-0 bg-danger text-white p-3">
+									<h5>Pending Requests</h5>
+									<p className="fs-4 fw-bold">10</p>
+								</div>
+							</div>
 						</div>
 					</div>
-					<div className="col-md-4">
-						<div className="card text-center shadow border-0 bg-danger text-white p-3">
-							<h5>Active Users</h5>
-							<p className="fs-4 fw-bold">35</p>
-						</div>
-					</div>
-					<div className="col-md-4">
-						<div className="card text-center shadow border-0 bg-danger text-white p-3">
-							<h5>Pending Requests</h5>
-							<p className="fs-4 fw-bold">10</p>
+
+					{/* Blood Requests Section (Now Properly Aligned Below Navbar) */}
+					<div className="col-lg-3 mt-3">
+						<div className="card shadow-sm">
+							<div className="card-header bg-danger text-white text-center">
+								<h4 className="mb-0">Blood Requests</h4>
+							</div>
+							<div className="card-body overflow-auto" style={{ maxHeight: "70vh" }}>
+								<ul className="list-group">
+									{bloodRequests.length > 0 ? (
+										bloodRequests.map((request) => (
+											<li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
+												<strong className="text-danger">{request.username}</strong>
+												<span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
+												<span>City: {request.city}</span>
+												<span>Hospital: {request.hospital}</span>
+
+												{/* Apply Button */}
+												<button 
+													className="btn btn-danger btn-sm mt-2 w-100"
+													onClick={() => handleApply(request.id)}
+													disabled={appliedRequests.has(request.id)}
+												>
+													{appliedRequests.has(request.id) ? "Applied ✅" : "Apply"}
+												</button>
+											</li>
+										))
+									) : (
+										<p className="text-center">No blood requests available.</p>
+									)}
+								</ul>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			{/* Right Sidebar - Blood Requests List */}
-			<div className="p-4 bg-light w-25 vh-100 overflow-auto border-start shadow-sm position-absolute end-0 top-0 mt-5">
-				<h4 className="text-center text-danger fw-bold">Blood Requests</h4>
-				<ul className="list-group">
-					{bloodRequests.length > 0 ? (
-						bloodRequests.map((request) => (
-							<li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
-								<strong className="text-danger">{request.username}</strong>
-								<span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
-								<span>City: {request.city}</span>
-								<span>Hospital: {request.hospital}</span>
-
-								{/* Apply Button */}
-								<button 
-									className="btn btn-danger btn-sm mt-2 w-100"
-									onClick={() => handleApply(request.id)}
-									disabled={appliedRequests.has(request.id)}
-								>
-									{appliedRequests.has(request.id) ? "Applied ✅" : "Apply"}
-								</button>
-							</li>
-						))
-					) : (
-						<p className="text-center">No blood requests available.</p>
-					)}
-				</ul>
-			</div>
-
 			{/* Custom Styles */}
 			<style>
 				{`
-          body {
-            background: linear-gradient(to right, rgb(255, 255, 255), rgb(254, 232, 227));
-          }
-          .card:hover {
-            transform: scale(1.05);
-            transition: 0.3s ease-in-out;
-          }
-          .list-group-item:hover {
-            background: #f8d7da;
-            transition: 0.3s;
-          }
-        `}
+					body {
+						background: linear-gradient(to right, rgb(255, 255, 255), rgb(254, 232, 227));
+					}
+					.card:hover {
+						transform: scale(1.05);
+						transition: 0.3s ease-in-out;
+					}
+					.list-group-item:hover {
+						background: #f8d7da;
+						transition: 0.3s;
+					}
+				`}
 			</style>
 		</div>
 	);
