@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
-// import "bootstrap/dist/css/bootstrap.min.css"; This already been added once in main.jsx
 
 const Sidebar = () => (
 	<div className="sidebar bg-danger text-white vh-100 p-3 position-fixed shadow" style={{ width: "260px" }}>
@@ -35,9 +34,9 @@ const Navbar = () => (
 
 const Dashboard = () => {
 	const [bloodRequests, setBloodRequests] = useState([]);
+	const [appliedRequests, setAppliedRequests] = useState(new Set());
 
 	useEffect(() => {
-		// Simulated fetch request (Replace with actual API call later)
 		const fetchBloodRequests = async () => {
 			try {
 				const response = await fetch("http://localhost:3000/api/users/get-applications", {
@@ -45,7 +44,7 @@ const Dashboard = () => {
 					credentials: "include",
 				});
 				const data = await response.json();
-				console.log(data)
+				console.log(data);
 				setBloodRequests(data);
 			} catch (error) {
 				console.error("Error fetching blood requests:", error);
@@ -58,6 +57,29 @@ const Dashboard = () => {
 		]);
 		fetchBloodRequests();
 	}, []);
+
+	// Handle Apply Button Click
+	const handleApply = async (requestId) => {
+		if (appliedRequests.has(requestId)) return;
+
+		try {
+			const response = await fetch("http://localhost:3000/api/users/apply-blood-request", {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
+				body: JSON.stringify({ requestId }),
+			});
+
+			if (response.ok) {
+				alert("Successfully applied for blood request!");
+				setAppliedRequests(new Set([...appliedRequests, requestId])); // Mark as applied
+			} else {
+				alert("Failed to apply. Please try again.");
+			}
+		} catch (error) {
+			console.error("Error applying for blood request:", error);
+		}
+	};
 
 	return (
 		<div className="d-flex">
@@ -100,6 +122,15 @@ const Dashboard = () => {
 								<span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
 								<span>City: {request.city}</span>
 								<span>Hospital: {request.hospital}</span>
+
+								{/* Apply Button */}
+								<button 
+									className="btn btn-danger btn-sm mt-2 w-100"
+									onClick={() => handleApply(request.id)}
+									disabled={appliedRequests.has(request.id)}
+								>
+									{appliedRequests.has(request.id) ? "Applied ✅" : "Apply"}
+								</button>
 							</li>
 						))
 					) : (
@@ -112,7 +143,7 @@ const Dashboard = () => {
 			<style>
 				{`
           body {
-            background: linear-gradient(to right,rgb(255, 255, 255),rgb(254, 232, 227));
+            background: linear-gradient(to right, rgb(255, 255, 255), rgb(254, 232, 227));
           }
           .card:hover {
             transform: scale(1.05);
