@@ -2,32 +2,16 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
 
-const Sidebar = () => (
-	<div className="sidebar bg-danger text-white vh-100 p-3 position-fixed shadow" style={{ width: "260px" }}>
-		<h2 className="mb-4 text-center fw-bold">Dashboard</h2>
-		<ul className="nav flex-column">
-			<li className="nav-item mb-3">
-				<Link to="/dashboard" className="nav-link text-white"><FiHome className="me-2" /> Dashboard</Link>
-			</li>
-			<li className="nav-item mb-3">
-				<Link to="/users" className="nav-link text-white"><FiUser className="me-2" /> Users</Link>
-			</li>
-			<li className="nav-item mb-3">
-				<Link to="/donations" className="nav-link text-white"><FiHeart className="me-2" /> Donations</Link>
-			</li>
-			<li className="nav-item">
-				<Link to="/info" className="nav-link text-white"><FiBarChart2 className="me-2" /> Info</Link>
-			</li>
-		</ul>
-	</div>
-);
-
 const Navbar = () => (
-	<div className="navbar bg-white shadow p-3">
-		<h2 className="d-inline-block text-danger fw-bold">Blood Donation Dashboard</h2>
-		<div className="float-end">
-			<button className="btn btn-light border me-2">🔔 Notifications</button>
-			<button className="btn btn-danger">👤 Profile</button>
+	<div className="navbar bg-danger text-white shadow p-3 d-flex justify-content-between">
+		<h2 className="fw-bold">Blood Donation Dashboard</h2>
+		<div>
+			<Link to="/dashboard" className="btn btn-light me-2"><FiHome className="me-1" /> Dashboard</Link>
+			<Link to="/users" className="btn btn-light me-2"><FiUser className="me-1" /> Users</Link>
+			<Link to="/donations" className="btn btn-light me-2"><FiHeart className="me-1" /> Donations</Link>
+			<Link to="/info" className="btn btn-light me-2"><FiBarChart2 className="me-1" /> Info</Link>
+			<button className="btn btn-warning me-2">🔔 Notifications</button>
+			<button className="btn btn-light">👤 Profile</button>
 		</div>
 	</div>
 );
@@ -58,7 +42,6 @@ const Dashboard = () => {
 		fetchBloodRequests();
 	}, []);
 
-	// Handle Apply Button Click
 	const handleApply = async (requestId) => {
 		if (appliedRequests.has(requestId)) return;
 
@@ -72,7 +55,7 @@ const Dashboard = () => {
 
 			if (response.ok) {
 				alert("Successfully applied for blood request!");
-				setAppliedRequests(new Set([...appliedRequests, requestId])); // Mark as applied
+				setAppliedRequests(new Set([...appliedRequests, requestId]));
 			} else {
 				alert("Failed to apply. Please try again.");
 			}
@@ -82,37 +65,34 @@ const Dashboard = () => {
 	};
 
 	return (
-		<div className="d-flex">
-			<Sidebar />
-			<div className="content p-4 w-75" style={{ marginLeft: "260px" }}>
-				<Navbar />
-				<div className="mt-4">
-					<h3 className="text-center text-danger fw-bold">Dashboard Overview</h3>
-					<div className="row mt-3">
-						<div className="col-md-4">
-							<div className="card text-center shadow border-0 bg-danger text-white p-3">
-								<h5>Total Donations</h5>
-								<p className="fs-4 fw-bold">120</p>
-							</div>
+		<div>
+			<Navbar />
+			<div className="container mt-4">
+				<h3 className="text-center text-danger fw-bold">Dashboard Overview</h3>
+				<div className="row mt-3">
+					<div className="col-md-4">
+						<div className="card text-center shadow border-0 bg-danger text-white p-3">
+							<h5>Total Donations</h5>
+							<p className="fs-4 fw-bold">120</p>
 						</div>
-						<div className="col-md-4">
-							<div className="card text-center shadow border-0 bg-danger text-white p-3">
-								<h5>Active Users</h5>
-								<p className="fs-4 fw-bold">35</p>
-							</div>
+					</div>
+					<div className="col-md-4">
+						<div className="card text-center shadow border-0 bg-danger text-white p-3">
+							<h5>Active Users</h5>
+							<p className="fs-4 fw-bold">35</p>
 						</div>
-						<div className="col-md-4">
-							<div className="card text-center shadow border-0 bg-danger text-white p-3">
-								<h5>Pending Requests</h5>
-								<p className="fs-4 fw-bold">10</p>
-							</div>
+					</div>
+					<div className="col-md-4">
+						<div className="card text-center shadow border-0 bg-danger text-white p-3">
+							<h5>Pending Requests</h5>
+							<p className="fs-4 fw-bold">10</p>
 						</div>
 					</div>
 				</div>
 			</div>
 
 			{/* Right Sidebar - Blood Requests List */}
-			<div className="p-4 bg-light w-25 vh-100 overflow-auto border-start shadow-sm">
+			<div className="p-4 bg-light w-25 vh-100 overflow-auto border-start shadow-sm position-absolute end-0 top-0 mt-5">
 				<h4 className="text-center text-danger fw-bold">Blood Requests</h4>
 				<ul className="list-group">
 					{bloodRequests.length > 0 ? (
