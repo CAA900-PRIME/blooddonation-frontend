@@ -23,54 +23,58 @@ const Dashboard = () => {
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 
 	useEffect(() => {
-		const fetchRequests = async () => {
-			try {
-				const response = await fetch("http://localhost:3000/api/users/get-applications", {
-					method: "GET",
-					credentials: "include",
-				});
-				const data = await response.json();
-				console.log(data);
-				setBloodRequests(data.availableRequests);
-				setAppliedRequests(data.appliedRequests);
-				setAcceptedRequests(data.acceptedRequests);
-				setCreatedRequests(data.createdRequests);
-			} catch (error) {
-				console.error("Error fetching blood requests:", error);
-			}
-		};
+		// Simulated Fetch (Replace this with real backend API call later)
+		setBloodRequests([
+			{ id: 1, username: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
+			{ id: 2, username: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
+			{ id: 3, username: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
+		]);
 
-		fetchRequests();
+		setAppliedRequests([
+			{ id: 4, username: "Alice Johnson", bloodGroup: "AB-", city: "Boston", hospital: "Boston Health Center" },
+			{ id: 5, username: "Mark Lee", bloodGroup: "O+", city: "San Francisco", hospital: "SF Medical" },
+		]);
+
+		setAcceptedRequests([
+			{ id: 6, username: "Daniel Kim", bloodGroup: "B-", city: "Houston", hospital: "Houston Care" },
+		]);
+
+		setCreatedRequests([
+			{ id: 7, username: "Your Request", bloodGroup: "A-", city: "Miami", hospital: "Miami General" },
+			{ id: 8, username: "Your Request", bloodGroup: "O-", city: "Seattle", hospital: "Seattle Clinic" },
+		]);
 	}, []);
 
-	const handleApply = async (requestId) => {
-		if (appliedRequests.some((req) => req.id === requestId)) return;
-
-		try {
-			const response = await fetch("http://localhost:3000/api/users/apply-blood-request", {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				credentials: "include",
-				body: JSON.stringify({ requestId }),
-			});
-
-			if (response.ok) {
-				alert("Successfully applied for blood request!");
-				setAppliedRequests([...appliedRequests, { id: requestId }]);
-			} else {
-				alert("Failed to apply. Please try again.");
-			}
-		} catch (error) {
-			console.error("Error applying for blood request:", error);
-		}
+	const handleApply = (requestId) => {
+		alert(`Applied for request ID: ${requestId}`);
 	};
+
+	const renderRequestList = (requests, btnText, btnColor) => (
+		<ul className="list-group">
+			{requests.length > 0 ? (
+				requests.map((request) => (
+					<li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
+						<strong className="text-danger">{request.username}</strong>
+						<span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
+						<span>City: {request.city}</span>
+						<span>Hospital: {request.hospital}</span>
+						<button className={`btn btn-${btnColor} btn-sm mt-2 w-100`}>
+							{btnText}
+						</button>
+					</li>
+				))
+			) : (
+				<p className="text-center">No requests available.</p>
+			)}
+		</ul>
+	);
 
 	return (
 		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 			<Navbar />
 			<div className="container-fluid mt-4">
 				<div className="row">
-					
+
 					{/* Blood Requests Section */}
 					<div className="col-lg-3">
 						<div className="card shadow-sm">
@@ -78,29 +82,7 @@ const Dashboard = () => {
 								<h4 className="mb-0">Blood Requests</h4>
 							</div>
 							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-								<ul className="list-group">
-									{bloodRequests.length > 0 ? (
-										bloodRequests.map((request) => (
-											<li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
-												<strong className="text-danger">{request.username}</strong>
-												<span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
-												<span>City: {request.city}</span>
-												<span>Hospital: {request.hospital}</span>
-
-												{/* Apply Button */}
-												<button 
-													className="btn btn-danger btn-sm mt-2 w-100"
-													onClick={() => handleApply(request.id)}
-													disabled={appliedRequests.some((req) => req.id === request.id)}
-												>
-													{appliedRequests.some((req) => req.id === request.id) ? "Applied ✅" : "Apply"}
-												</button>
-											</li>
-										))
-									) : (
-										<p className="text-center">No blood requests available.</p>
-									)}
-								</ul>
+								{renderRequestList(bloodRequests, "Apply", "danger")}
 							</div>
 						</div>
 					</div>
@@ -112,20 +94,7 @@ const Dashboard = () => {
 								<h4 className="mb-0">Accepted Requests</h4>
 							</div>
 							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-								<ul className="list-group">
-									{acceptedRequests.length > 0 ? (
-										acceptedRequests.map((request) => (
-											<li key={request.id} className="list-group-item bg-white shadow-sm p-3 mb-2">
-												<strong className="text-success">{request.username}</strong>
-												<span>Blood Group: <span className="badge bg-success">{request.bloodGroup}</span></span>
-												<span>City: {request.city}</span>
-												<span>Hospital: {request.hospital}</span>
-											</li>
-										))
-									) : (
-										<p className="text-center">No accepted requests.</p>
-									)}
-								</ul>
+								{renderRequestList(acceptedRequests, "Accepted ✅", "success")}
 							</div>
 						</div>
 					</div>
@@ -137,20 +106,7 @@ const Dashboard = () => {
 								<h4 className="mb-0">Created Requests</h4>
 							</div>
 							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-								<ul className="list-group">
-									{createdRequests.length > 0 ? (
-										createdRequests.map((request) => (
-											<li key={request.id} className="list-group-item bg-white shadow-sm p-3 mb-2">
-												<strong className="text-primary">{request.username}</strong>
-												<span>Blood Group: <span className="badge bg-primary">{request.bloodGroup}</span></span>
-												<span>City: {request.city}</span>
-												<span>Hospital: {request.hospital}</span>
-											</li>
-										))
-									) : (
-										<p className="text-center">No created requests.</p>
-									)}
-								</ul>
+								{renderRequestList(createdRequests, "Your Request", "primary")}
 							</div>
 						</div>
 					</div>
