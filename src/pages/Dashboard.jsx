@@ -18,10 +18,12 @@ const Navbar = () => (
 
 const Dashboard = () => {
 	const [bloodRequests, setBloodRequests] = useState([]);
-	const [appliedRequests, setAppliedRequests] = useState(new Set());
+	const [appliedRequests, setAppliedRequests] = useState([]);
+	const [createdRequests, setCreatedRequests] = useState([]);
+	const [acceptedRequests, setAcceptedRequests] = useState([]);
 
 	useEffect(() => {
-		const fetchBloodRequests = async () => {
+		const fetchRequests = async () => {
 			try {
 				const response = await fetch("http://localhost:3000/api/users/get-applications", {
 					method: "GET",
@@ -29,21 +31,20 @@ const Dashboard = () => {
 				});
 				const data = await response.json();
 				console.log(data);
-				setBloodRequests(data);
+				setBloodRequests(data.availableRequests);
+				setAppliedRequests(data.appliedRequests);
+				setAcceptedRequests(data.acceptedRequests);
+				setCreatedRequests(data.createdRequests);
 			} catch (error) {
 				console.error("Error fetching blood requests:", error);
 			}
 		};
-		setBloodRequests([
-			{ id: 1, username: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
-			{ id: 2, username: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
-			{ id: 3, username: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
-		]);
-		fetchBloodRequests();
+
+		fetchRequests();
 	}, []);
 
 	const handleApply = async (requestId) => {
-		if (appliedRequests.has(requestId)) return;
+		if (appliedRequests.some((req) => req.id === requestId)) return;
 
 		try {
 			const response = await fetch("http://localhost:3000/api/users/apply-blood-request", {
@@ -55,7 +56,7 @@ const Dashboard = () => {
 
 			if (response.ok) {
 				alert("Successfully applied for blood request!");
-				setAppliedRequests(new Set([...appliedRequests, requestId]));
+				setAppliedRequests([...appliedRequests, { id: requestId }]);
 			} else {
 				alert("Failed to apply. Please try again.");
 			}
@@ -68,9 +69,10 @@ const Dashboard = () => {
 		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 			<Navbar />
 			<div className="container-fluid mt-4">
-				<div className="row justify-content-center">
+				<div className="row">
+					
 					{/* Blood Requests Section */}
-					<div className="col-lg-4">
+					<div className="col-lg-3">
 						<div className="card shadow-sm">
 							<div className="card-header bg-danger text-white text-center">
 								<h4 className="mb-0">Blood Requests</h4>
@@ -89,9 +91,9 @@ const Dashboard = () => {
 												<button 
 													className="btn btn-danger btn-sm mt-2 w-100"
 													onClick={() => handleApply(request.id)}
-													disabled={appliedRequests.has(request.id)}
+													disabled={appliedRequests.some((req) => req.id === request.id)}
 												>
-													{appliedRequests.has(request.id) ? "Applied ✅" : "Apply"}
+													{appliedRequests.some((req) => req.id === request.id) ? "Applied ✅" : "Apply"}
 												</button>
 											</li>
 										))
@@ -102,6 +104,57 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
+
+					{/* Accepted Requests Section */}
+					<div className="col-lg-3">
+						<div className="card shadow-sm">
+							<div className="card-header bg-success text-white text-center">
+								<h4 className="mb-0">Accepted Requests</h4>
+							</div>
+							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
+								<ul className="list-group">
+									{acceptedRequests.length > 0 ? (
+										acceptedRequests.map((request) => (
+											<li key={request.id} className="list-group-item bg-white shadow-sm p-3 mb-2">
+												<strong className="text-success">{request.username}</strong>
+												<span>Blood Group: <span className="badge bg-success">{request.bloodGroup}</span></span>
+												<span>City: {request.city}</span>
+												<span>Hospital: {request.hospital}</span>
+											</li>
+										))
+									) : (
+										<p className="text-center">No accepted requests.</p>
+									)}
+								</ul>
+							</div>
+						</div>
+					</div>
+
+					{/* Created Requests Section */}
+					<div className="col-lg-3">
+						<div className="card shadow-sm">
+							<div className="card-header bg-primary text-white text-center">
+								<h4 className="mb-0">Created Requests</h4>
+							</div>
+							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
+								<ul className="list-group">
+									{createdRequests.length > 0 ? (
+										createdRequests.map((request) => (
+											<li key={request.id} className="list-group-item bg-white shadow-sm p-3 mb-2">
+												<strong className="text-primary">{request.username}</strong>
+												<span>Blood Group: <span className="badge bg-primary">{request.bloodGroup}</span></span>
+												<span>City: {request.city}</span>
+												<span>Hospital: {request.hospital}</span>
+											</li>
+										))
+									) : (
+										<p className="text-center">No created requests.</p>
+									)}
+								</ul>
+							</div>
+						</div>
+					</div>
+
 				</div>
 			</div>
 
