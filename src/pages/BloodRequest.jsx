@@ -1,37 +1,50 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaTint, FaHospital, FaCity, FaPhone, FaGlobe, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 
 function BloodRequest({ user }) { // user prop is passed to get requester_id
+	const [loading, setLoading] = useState(false); // Loading effect on submit
 	const [formData, setFormData] = useState({
-		requester_id: user?.id || "", // Auto-filled if user is logged in
+		requester_id: user?.id || "",
 		blood_type: "",
 		hospital_name: "",
 		hospital_address: "",
-		country: "",
-		city: "",
-		contact_phone_number: "",
-		status: "Pending", // Default status
+		country: user?.country || "",
+		city: user?.city || "",
+		contact_phone_number: user?.phone_number || "",
+		appointment: "", // Set default empty string to prevent undefined issue
 	});
-
-	const [loading, setLoading] = useState(false); // Loading effect on submit
-
+	// const handleChange = (e) => {
+	// 	setFormData({ ...formData, [e.target.name]: e.target.value });
+	// };
+	//
 	const handleChange = (e) => {
-		setFormData({ ...formData, [e.target.name]: e.target.value });
+		setFormData((prev) => ({
+			...prev,
+			[e.target.name]: e.target.value,
+		}));
 	};
-
 	const handleSubmit = async (e) => {
 		e.preventDefault();
+
+		if (!formData.blood_type || !formData.hospital_name || !formData.contact_phone_number) {
+			alert("Please fill in all required fields.");
+			setLoading(false);
+			return;
+		}
 		setLoading(true);
-
 		const requestData = JSON.stringify(formData);
-
+		console.log(requestData)
 		try {
-			const response = await fetch("http://localhost:3000/api/blood-requests", {
+			const response = await fetch("http://localhost:3000/api/app/create-application", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: requestData,
+				credentials: "include",
 			});
+
+			const responseData = await response.json();
+			console.log("Server response:", responseData);
 
 			if (response.ok) {
 				alert("Your blood request has been submitted successfully!");
@@ -52,7 +65,7 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 				<div className="card shadow-lg p-4">
 					<h2 className="text-center text-danger mb-4">Request Blood</h2>
 					<form onSubmit={handleSubmit}>
-						
+
 						{/* Requester ID (Auto-filled) */}
 						<div className="mb-3">
 							<label className="form-label">Requester ID</label>
@@ -77,8 +90,7 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 									<option value="O-">O-</option>
 									<option value="AB+">AB+</option>
 									<option value="AB-">AB-</option>
-								</select>
-							</div>
+								</select> </div>
 						</div>
 
 						{/* Hospital Name */}
@@ -104,7 +116,7 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 							<label className="form-label">Country</label>
 							<div className="input-group">
 								<span className="input-group-text"><FaGlobe /></span>
-								<input type="text" className="form-control" name="country" value={formData.country} onChange={handleChange} required />
+								<input type="text" className="form-control" name="country" value={formData.country} onChange={handleChange} disabled />
 							</div>
 						</div>
 
@@ -113,9 +125,17 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 							<label className="form-label">City</label>
 							<div className="input-group">
 								<span className="input-group-text"><FaCity /></span>
-								<input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} required />
+								<input type="text" className="form-control" name="city" value={formData.city} onChange={handleChange} disabled />
 							</div>
 						</div>
+
+						<div className="mb-3">
+							<label className="form-label">Appointment</label>
+							<div className="input-group">
+								<input type="datetime-local" name="appointment" className="form-control" value={formData.appointment} onChange={handleChange} required />
+							</div>
+						</div>
+
 
 						{/* Contact Phone Number */}
 						<div className="mb-3">
