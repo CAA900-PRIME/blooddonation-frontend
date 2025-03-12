@@ -65,42 +65,17 @@ const Dashboard = () => {
 	};
 
 	return (
-		<div>
+		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 			<Navbar />
 			<div className="container-fluid mt-4">
-				<div className="row">
-					{/* Main Dashboard Content */}
-					<div className="col-lg-9">
-						<h3 className="text-center text-danger fw-bold">Dashboard Overview</h3>
-						<div className="row mt-3">
-							<div className="col-md-4">
-								<div className="card text-center shadow border-0 bg-danger text-white p-3">
-									<h5>Total Donations</h5>
-									<p className="fs-4 fw-bold">120</p>
-								</div>
-							</div>
-							<div className="col-md-4">
-								<div className="card text-center shadow border-0 bg-danger text-white p-3">
-									<h5>Active Users</h5>
-									<p className="fs-4 fw-bold">35</p>
-								</div>
-							</div>
-							<div className="col-md-4">
-								<div className="card text-center shadow border-0 bg-danger text-white p-3">
-									<h5>Pending Requests</h5>
-									<p className="fs-4 fw-bold">10</p>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					{/* Blood Requests Section (Now Properly Aligned Below Navbar) */}
-					<div className="col-lg-3 mt-3">
+				<div className="row justify-content-center">
+					{/* Blood Requests Section */}
+					<div className="col-lg-4">
 						<div className="card shadow-sm">
 							<div className="card-header bg-danger text-white text-center">
 								<h4 className="mb-0">Blood Requests</h4>
 							</div>
-							<div className="card-body overflow-auto" style={{ maxHeight: "70vh" }}>
+							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
 								<ul className="list-group">
 									{bloodRequests.length > 0 ? (
 										bloodRequests.map((request) => (
@@ -134,7 +109,7 @@ const Dashboard = () => {
 			<style>
 				{`
 					body {
-						background: linear-gradient(to right, rgb(255, 255, 255), rgb(254, 232, 227));
+						background-color: #fff !important;
 					}
 					.card:hover {
 						transform: scale(1.05);
