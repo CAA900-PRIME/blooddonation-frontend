@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import signupImage from "../assets/signup_image.jpg";
-
+const apiUrl = import.meta.env.VITE_API_URL;
 const Signup = () => {
 	const [formData, setFormData] = useState({
 		firstName: "",
@@ -74,7 +74,7 @@ const Signup = () => {
 
 		setError("");
 		try {
-			const response = await fetch("http://localhost:3000/api/auth/signup", {
+			const response = await fetch(`${apiUrl}/api/auth/signup`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({

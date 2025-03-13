@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaTint, FaHospital, FaCity, FaPhone, FaGlobe, FaMapMarkerAlt, FaUser } from "react-icons/fa";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 function BloodRequest({ user }) { // user prop is passed to get requester_id
 	const [loading, setLoading] = useState(false); // Loading effect on submit
@@ -36,7 +37,7 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 		const requestData = JSON.stringify(formData);
 		console.log(requestData)
 		try {
-			const response = await fetch("http://localhost:3000/api/app/create-application", {
+			const response = await fetch(`${apiUrl}/api/app/create-application`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: requestData,
