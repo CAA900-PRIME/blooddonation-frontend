@@ -7,6 +7,14 @@ const Login = ({ setUser }) => {
 	const [password, setPassword] = useState("");
 	const navigate = useNavigate();
 
+	{/* we need to redirect to dashboard if loggedin */ }
+	useEffect(() => {
+		if (localStorage.getItem('user')) {
+			navigate('/dashboard');
+		}
+	}, [navigate]);
+
+
 	const handleLogin = async () => {
 		const response = await fetch("http://localhost:3000/api/auth/login", {
 			method: "POST",
