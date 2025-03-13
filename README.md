@@ -10,6 +10,14 @@ Currently, two official plugins are available:
 ### Setup
 Please ensure nodejs is installed following the link [nodejs](https://nodejs.org/en). If you already have nodejs installed, you can go ahead to start the front-end server by using the following command
 
+Download Libraries
+
+```bash
+npm install
+```
+
+And run front-end server.
+
 ```bash
 npm run dev
 ```

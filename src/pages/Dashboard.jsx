@@ -27,25 +27,67 @@ const Dashboard = () => {
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 
 	useEffect(() => {
-		setBloodRequests([
-			{ id: 1, username: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
-			{ id: 2, username: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
-			{ id: 3, username: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
-		]);
+		const fetchApplications = async () => {
+			try {
+				const response = await fetch('http://localhost:3000/api/app/get-applications', {
+					method: "GET",
+					credentials: "include",
+					Headers: {
+						'Content-Type': 'application/json',
+					}
+				});
+				const data = await response.json();
+				if (response.ok) {
+					setBloodRequests(data);
+				} else {
+					console.error('Error fetching data:', data);
+				}
+			} catch (error) {
+				console.error('An error occurred:', error);
+			}
+		};
 
-		setAppliedRequests([
-			{ id: 4, username: "Alice Johnson", bloodGroup: "AB-", city: "Boston", hospital: "Boston Health Center" },
-			{ id: 5, username: "Mark Lee", bloodGroup: "O+", city: "San Francisco", hospital: "SF Medical" },
-		]);
+		const fetchMyApplication = async () => {
+			try {
+				const response = await fetch('http://localhost:3000/api/app/get-my-applications', {
+					method: "GET",
+					credentials: "include",
+					Headers: {
+						'Content-Type': 'application/json',
+					}
+				});
+				const data = await response.json();
+				if (response.ok) {
+					setCreatedRequests(data);
+				} else {
+					console.error('Error fetching data:', data);
+				}
+			} catch (error) {
+				console.error('An error occurred:', error);
+			}
+		};
 
-		setAcceptedRequests([
-			{ id: 6, username: "Daniel Kim", bloodGroup: "B-", city: "Houston", hospital: "Houston Care" },
-		]);
 
-		setCreatedRequests([
-			{ id: 7, username: "Your Request", bloodGroup: "A-", city: "Miami", hospital: "Miami General" },
-			{ id: 8, username: "Your Request", bloodGroup: "O-", city: "Seattle", hospital: "Seattle Clinic" },
-		]);
+		// setBloodRequests([
+		// 	{ id: 1, username: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
+		// 	{ id: 2, username: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
+		// 	{ id: 3, username: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
+		// ]);
+		// setAppliedRequests([
+		// 	{ id: 4, username: "Alice Johnson", bloodGroup: "AB-", city: "Boston", hospital: "Boston Health Center" },
+		// 	{ id: 5, username: "Mark Lee", bloodGroup: "O+", city: "San Francisco", hospital: "SF Medical" },
+		// ]);
+		//
+		// setAcceptedRequests([
+		// 	{ id: 6, username: "Daniel Kim", bloodGroup: "B-", city: "Houston", hospital: "Houston Care" },
+		// ]);
+		//
+		// setCreatedRequests([
+		// 	{ id: 7, username: "Your Request", bloodGroup: "A-", city: "Miami", hospital: "Miami General" },
+		// 	{ id: 8, username: "Your Request", bloodGroup: "O-", city: "Seattle", hospital: "Seattle Clinic" },
+		// ]);
+		fetchMyApplication();
+		fetchApplications();
 	}, []);
 
 	const handleLogout = () => {
@@ -54,15 +96,20 @@ const Dashboard = () => {
 		navigate("/login");
 	};
 
+	{/* TODO: we need to create functions for each button */ }
 	const renderRequestList = (requests, btnText, btnColor) => (
 		<ul className="list-group">
 			{requests.length > 0 ? (
 				requests.map((request) => (
 					<li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
 						<strong className="text-danger">{request.username}</strong>
-						<span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
+						<span>Blood Group: <span className="badge bg-danger">{request.blood_type}</span></span>
 						<span>City: {request.city}</span>
-						<span>Hospital: {request.hospital}</span>
+						<span>Country: {request.country}</span>
+						<span>Hospital Name: {request.hospital_name}</span>
+						<span>Hospital Address: {request.hospital_address}</span>
+						<span>Appointment: {request.appointment}</span>
+						<span>Status: {request.status}</span>
 						<button className={`btn btn-${btnColor} btn-sm mt-2 w-100`}>
 							{btnText}
 						</button>
@@ -111,7 +158,7 @@ const Dashboard = () => {
 								<h4 className="mb-0">Created Requests</h4>
 							</div>
 							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-								{renderRequestList(createdRequests, "Your Request", "primary")}
+								{renderRequestList(createdRequests, "Modify Request", "primary")}
 							</div>
 						</div>
 					</div>

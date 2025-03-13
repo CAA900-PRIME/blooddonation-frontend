@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -6,6 +6,14 @@ const Login = ({ setUser }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const navigate = useNavigate();
+
+	{/* we need to redirect to dashboard if loggedin */ }
+	useEffect(() => {
+		if (localStorage.getItem('user')) {
+			navigate('/dashboard');
+		}
+	}, [navigate]);
+
 
 	const handleLogin = async () => {
 		const response = await fetch("http://localhost:3000/api/auth/login", {
