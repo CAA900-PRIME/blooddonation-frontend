@@ -45,10 +45,6 @@ const Dashboard = () => {
 		]);
 	}, []);
 
-	const handleApply = (requestId) => {
-		alert(`Applied for request ID: ${requestId}`);
-	};
-
 	const renderRequestList = (requests, btnText, btnColor) => (
 		<ul className="list-group">
 			{requests.length > 0 ? (
@@ -76,7 +72,7 @@ const Dashboard = () => {
 				<div className="row">
 
 					{/* Blood Requests Section */}
-					<div className="col-lg-3">
+					<div className="col-md-4">
 						<div className="card shadow-sm">
 							<div className="card-header bg-danger text-white text-center">
 								<h4 className="mb-0">Blood Requests</h4>
@@ -88,7 +84,7 @@ const Dashboard = () => {
 					</div>
 
 					{/* Accepted Requests Section */}
-					<div className="col-lg-3">
+					<div className="col-md-4">
 						<div className="card shadow-sm">
 							<div className="card-header bg-success text-white text-center">
 								<h4 className="mb-0">Accepted Requests</h4>
@@ -100,7 +96,7 @@ const Dashboard = () => {
 					</div>
 
 					{/* Created Requests Section */}
-					<div className="col-lg-3">
+					<div className="col-md-4">
 						<div className="card shadow-sm">
 							<div className="card-header bg-primary text-white text-center">
 								<h4 className="mb-0">Created Requests</h4>
@@ -120,8 +116,14 @@ const Dashboard = () => {
 					body {
 						background-color: #fff !important;
 					}
+					.card {
+						height: 85vh;
+					}
+					.card-body {
+						overflow-y: auto;
+					}
 					.card:hover {
-						transform: scale(1.05);
+						transform: scale(1.02);
 						transition: 0.3s ease-in-out;
 					}
 					.list-group-item:hover {
