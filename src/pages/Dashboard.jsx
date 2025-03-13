@@ -3,6 +3,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
 import { Modal, Button } from "react-bootstrap"; // Bootstrap Modal
 
+const apiUrl = import.meta.env.VITE_API_URL;
+
 const Navbar = ({ handleShowLogoutModal }) => (
 	<nav className="navbar bg-danger text-white shadow p-3 d-flex justify-content-between">
 		<h2 className="fw-bold">Blood Donation Dashboard</h2>
@@ -29,7 +31,7 @@ const Dashboard = () => {
 	useEffect(() => {
 		const fetchApplications = async () => {
 			try {
-				const response = await fetch('http://localhost:3000/api/app/get-applications', {
+				const response = await fetch(`${apiUrl}/api/app/get-applications`, {
 					method: "GET",
 					credentials: "include",
 					Headers: {
@@ -49,7 +51,7 @@ const Dashboard = () => {
 
 		const fetchMyApplication = async () => {
 			try {
-				const response = await fetch('http://localhost:3000/api/app/get-my-applications', {
+				const response = await fetch(`${apiUrl}/api/app/get-my-applications`, {
 					method: "GET",
 					credentials: "include",
 					Headers: {
