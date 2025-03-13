@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
+import { Modal, Button } from "react-bootstrap"; // Bootstrap Modal
 
-const Navbar = ({ handleLogout }) => (
+const Navbar = ({ handleShowLogoutModal }) => (
 	<nav className="navbar bg-danger text-white shadow p-3 d-flex justify-content-between">
 		<h2 className="fw-bold">Blood Donation Dashboard</h2>
 		<div>
@@ -12,20 +13,20 @@ const Navbar = ({ handleLogout }) => (
 			<Link to="/info" className="btn btn-light me-2"><FiBarChart2 className="me-1" /> Info</Link>
 			<button className="btn btn-warning me-2">🔔 Notifications</button>
 			<button className="btn btn-light me-2">👤 Profile</button>
-			<button className="btn btn-dark" onClick={handleLogout}>🚪 Logout</button>
+			<button className="btn btn-dark" onClick={handleShowLogoutModal}>🚪 Logout</button>
 		</div>
 	</nav>
 );
 
 const Dashboard = () => {
 	const navigate = useNavigate();
+	const [showLogoutModal, setShowLogoutModal] = useState(false);
 	const [bloodRequests, setBloodRequests] = useState([]);
 	const [appliedRequests, setAppliedRequests] = useState([]);
 	const [createdRequests, setCreatedRequests] = useState([]);
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 
 	useEffect(() => {
-		// Simulated Fetch (Replace with real backend API call later)
 		setBloodRequests([
 			{ id: 1, username: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
 			{ id: 2, username: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
@@ -75,7 +76,7 @@ const Dashboard = () => {
 
 	return (
 		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-			<Navbar handleLogout={handleLogout} />
+			<Navbar handleShowLogoutModal={() => setShowLogoutModal(true)} />
 			<div className="container-fluid mt-4">
 				<div className="row">
 
@@ -117,6 +118,24 @@ const Dashboard = () => {
 
 				</div>
 			</div>
+
+			{/* Logout Confirmation Modal */}
+			<Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
+				<Modal.Header closeButton>
+					<Modal.Title>Confirm Logout</Modal.Title>
+				</Modal.Header>
+				<Modal.Body>
+					<p>Are you sure you want to log out?</p>
+				</Modal.Body>
+				<Modal.Footer>
+					<Button variant="secondary" onClick={() => setShowLogoutModal(false)}>
+						Cancel
+					</Button>
+					<Button variant="danger" onClick={handleLogout}>
+						Logout
+					</Button>
+				</Modal.Footer>
+			</Modal>
 
 			{/* Custom Styles */}
 			<style>
