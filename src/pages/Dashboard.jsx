@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
 
-const Navbar = () => (
+const Navbar = ({ handleLogout }) => (
 	<nav className="navbar bg-danger text-white shadow p-3 d-flex justify-content-between">
 		<h2 className="fw-bold">Blood Donation Dashboard</h2>
 		<div>
@@ -11,19 +11,21 @@ const Navbar = () => (
 			<Link to="/donations" className="btn btn-light me-2"><FiHeart className="me-1" /> Donations</Link>
 			<Link to="/info" className="btn btn-light me-2"><FiBarChart2 className="me-1" /> Info</Link>
 			<button className="btn btn-warning me-2">🔔 Notifications</button>
-			<button className="btn btn-light">👤 Profile</button>
+			<button className="btn btn-light me-2">👤 Profile</button>
+			<button className="btn btn-dark" onClick={handleLogout}>🚪 Logout</button>
 		</div>
 	</nav>
 );
 
 const Dashboard = () => {
+	const navigate = useNavigate();
 	const [bloodRequests, setBloodRequests] = useState([]);
 	const [appliedRequests, setAppliedRequests] = useState([]);
 	const [createdRequests, setCreatedRequests] = useState([]);
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 
 	useEffect(() => {
-		// Simulated Fetch (Replace this with real backend API call later)
+		// Simulated Fetch (Replace with real backend API call later)
 		setBloodRequests([
 			{ id: 1, username: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
 			{ id: 2, username: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
@@ -44,6 +46,12 @@ const Dashboard = () => {
 			{ id: 8, username: "Your Request", bloodGroup: "O-", city: "Seattle", hospital: "Seattle Clinic" },
 		]);
 	}, []);
+
+	const handleLogout = () => {
+		localStorage.removeItem("user");
+		alert("You have been logged out.");
+		navigate("/login");
+	};
 
 	const renderRequestList = (requests, btnText, btnColor) => (
 		<ul className="list-group">
@@ -67,7 +75,7 @@ const Dashboard = () => {
 
 	return (
 		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-			<Navbar />
+			<Navbar handleLogout={handleLogout} />
 			<div className="container-fluid mt-4">
 				<div className="row">
 
