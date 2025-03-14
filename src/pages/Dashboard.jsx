@@ -5,7 +5,7 @@ import { Modal, Button } from "react-bootstrap";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const Navbar = ({ handleShowLogoutModal }) => (
+const Navbar = () => (
 	<nav className="navbar bg-danger text-white shadow p-3 d-flex justify-content-between">
 		<h2 className="fw-bold">Blood Donation Dashboard</h2>
 		<div>
@@ -15,14 +15,12 @@ const Navbar = ({ handleShowLogoutModal }) => (
 			<Link to="/info" className="btn btn-light me-2"><FiBarChart2 className="me-1" /> Info</Link>
 			<button className="btn btn-warning me-2">🔔 Notifications</button>
 			<Link to="/profile" className="btn btn-light me-2">👤 Profile</Link>
-			<button className="btn btn-dark" onClick={handleShowLogoutModal}>🚪 Logout</button>
 		</div>
 	</nav >
 );
 
 const Dashboard = () => {
 	const navigate = useNavigate();
-	const [showLogoutModal, setShowLogoutModal] = useState(false);
 	const [bloodRequests, setBloodRequests] = useState([]);
 	const [appliedRequests, setAppliedRequests] = useState([]);
 	const [createdRequests, setCreatedRequests] = useState([]);
@@ -34,9 +32,7 @@ const Dashboard = () => {
 				const response = await fetch(`${apiUrl}/api/app/get-applications`, {
 					method: "GET",
 					credentials: "include",
-					Headers: {
-						'Content-Type': 'application/json',
-					}
+					headers: { 'Content-Type': 'application/json' },
 				});
 				const data = await response.json();
 				if (response.ok) {
@@ -54,9 +50,7 @@ const Dashboard = () => {
 				const response = await fetch(`${apiUrl}/api/app/get-my-applications`, {
 					method: "GET",
 					credentials: "include",
-					Headers: {
-						'Content-Type': 'application/json',
-					}
+					headers: { 'Content-Type': 'application/json' },
 				});
 				const data = await response.json();
 				if (response.ok) {
@@ -72,13 +66,6 @@ const Dashboard = () => {
 		fetchApplications();
 	}, []);
 
-	const handleLogout = () => {
-		localStorage.removeItem("user");
-		alert("You have been logged out.");
-		navigate("/login");
-	};
-
-	{/* TODO: we need to create functions for each button */ }
 	const renderRequestList = (requests, btnText, btnColor) => (
 		<ul className="list-group">
 			{requests.length > 0 ? (
@@ -105,7 +92,7 @@ const Dashboard = () => {
 
 	return (
 		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
-			<Navbar handleShowLogoutModal={() => setShowLogoutModal(true)} />
+			<Navbar />
 			<div className="container-fluid mt-4">
 				<div className="row">
 
@@ -147,24 +134,6 @@ const Dashboard = () => {
 
 				</div>
 			</div>
-
-			{/* Logout Confirmation Modal */}
-			<Modal show={showLogoutModal} onHide={() => setShowLogoutModal(false)} centered>
-				<Modal.Header closeButton>
-					<Modal.Title>Confirm Logout</Modal.Title>
-				</Modal.Header>
-				<Modal.Body>
-					<p>Are you sure you want to log out?</p>
-				</Modal.Body>
-				<Modal.Footer>
-					<Button variant="secondary" onClick={() => setShowLogoutModal(false)}>
-						Cancel
-					</Button>
-					<Button variant="danger" onClick={handleLogout}>
-						Logout
-					</Button>
-				</Modal.Footer>
-			</Modal>
 
 			{/* Custom Styles */}
 			<style>
