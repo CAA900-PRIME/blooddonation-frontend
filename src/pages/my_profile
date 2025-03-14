@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import { FaUser, FaEnvelope, FaMobile, FaTint, FaCalendarAlt, FaGlobe, FaMapMarkerAlt, FaMale, FaBirthdayCake, FaPhone, FaCamera, FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "bootstrap/dist/css/bootstrap.min.css";
+import { FaCamera } from "react-icons/fa";
 
-const MyProfile = () => {
+const Profile = () => {
   const [image, setImage] = useState(null);
 
   const handleImageChange = (event) => {
@@ -19,10 +19,10 @@ const MyProfile = () => {
           <div className="position-relative mb-3">
             <label htmlFor="profile-image" className="cursor-pointer">
               <img
-                src={image || "https://via.placeholder.com/80"}
+                src={image || "https://via.placeholder.com/100"}
                 alt="Profile"
                 className="rounded-circle border img-fluid"
-                style={{ width: "80px", height: "80px" }}
+                style={{ width: "100px", height: "100px" }}
               />
               <FaCamera className="position-absolute bottom-0 end-0 bg-light p-1 rounded-circle" />
             </label>
@@ -34,50 +34,50 @@ const MyProfile = () => {
               onChange={handleImageChange}
             />
           </div>
-          <h2 className="h5">Shakib</h2>
-          <p className="text-muted">Blood Group: B+</p>
+          <h2 className="h5">Your Name</h2>
+          <p className="text-muted">Blood Group: -</p>
           <nav className="nav flex-column">
             <button className="btn btn-light mb-2">Dashboard</button>
-            <button className="btn btn-danger text-white mb-2">My Profile</button>
+            <button className="btn btn-danger text-white mb-2">Profile</button>
             <button className="btn btn-light mb-2">Settings</button>
             <button className="btn btn-light">Logout</button>
           </nav>
         </aside>
         <main className="ps-4 flex-grow-1">
-          <h1 className="h4 mb-4">My Profile</h1>
+          <h1 className="h4 mb-4">Profile</h1>
           <div className="row mb-4">
             <div className="col-auto">
               <img
-                src={image || "https://via.placeholder.com/80"}
+                src={image || "https://via.placeholder.com/100"}
                 alt="Profile"
                 className="rounded-circle border img-fluid"
-                style={{ width: "80px", height: "80px" }}
+                style={{ width: "100px", height: "100px" }}
               />
             </div>
             <div className="col">
-              <p><strong>Name:</strong> Sakhawat Hossain</p>
-              <p><strong>Username:</strong> shakib</p>
-              <p><strong>Email:</strong> imshshakib2001@gmail.com</p>
-              <p><strong>Mobile:</strong> 01849687969</p>
-              <p><strong>Availability:</strong> Available</p>
+              <p><strong>Name:</strong> -</p>
+              <p><strong>Username:</strong> -</p>
+              <p><strong>Email:</strong> -</p>
+              <p><strong>Mobile:</strong> -</p>
+              <p><strong>Availability:</strong> -</p>
             </div>
           </div>
           <div className="row">
             <div className="col-md-6">
-              <p><FaTint className="text-danger" /> <strong>Blood Group:</strong> B+</p>
-              <p><FaCalendarAlt className="text-danger" /> <strong>Last Donate:</strong> 2024-01-09</p>
-              <p><FaMale className="text-danger" /> <strong>Gender:</strong> Male</p>
-              <p><FaBirthdayCake className="text-danger" /> <strong>Date of Birth:</strong> January 9, 2001</p>
+              <p><strong>Blood Group:</strong> -</p>
+              <p><strong>Last Donate:</strong> -</p>
+              <p><strong>Gender:</strong> -</p>
+              <p><strong>Date of Birth:</strong> -</p>
             </div>
             <div className="col-md-6">
-              <p><FaGlobe className="text-danger" /> <strong>Country:</strong> Bangladesh</p>
-              <p><FaMapMarkerAlt className="text-danger" /> <strong>State:</strong> Bagerhat</p>
-              <p><FaMapMarkerAlt className="text-danger" /> <strong>City:</strong> Dhaka</p>
-              <p><FaMapMarkerAlt className="text-danger" /> <strong>Address:</strong> Lake Circus, Kalabagan, Dhaka</p>
+              <p><strong>Country:</strong> -</p>
+              <p><strong>State:</strong> -</p>
+              <p><strong>City:</strong> -</p>
+              <p><strong>Address:</strong> -</p>
             </div>
           </div>
           <div className="mt-4">
-            <p><strong>Social Media:</strong> <FaFacebook className="mx-1 text-danger" /> <FaTwitter className="mx-1 text-danger" /> <FaInstagram className="mx-1 text-danger" /> <FaLinkedin className="mx-1 text-danger" /></p>
+            <p><strong>Social Media:</strong> -</p>
           </div>
         </main>
       </div>
@@ -85,4 +85,4 @@ const MyProfile = () => {
   );
 };
 
-export default MyProfile;
+export default Profile;
