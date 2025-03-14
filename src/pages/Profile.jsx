@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaCamera } from "react-icons/fa";
 
 const Profile = () => {
 	const [image, setImage] = useState(null);
+	const [user, setUser] = useState();
+	const apiUrl = import.meta.env.VITE_API_URL;
 
 	const handleImageChange = (event) => {
 		const file = event.target.files[0];
@@ -11,6 +13,33 @@ const Profile = () => {
 		}
 	};
 
+	useEffect(() => {
+		const fetchUser = async () => {
+			try {
+				const response = await fetch(`${apiUrl}/api/users/get-user`, {
+					method: "GET",
+					credentials: "include",
+					headers: {
+						'Content-Type': 'application/json',
+					},
+				});
+				const data = await response.json();
+				if (response.ok) {
+					setUser(data);
+				} else {
+					console.error('Error fetching data:', data);
+				}
+			} catch (error) {
+				console.error('An error occurred:', error);
+			}
+		};
+		fetchUser();
+	}, []);
+
+
+	if (!user) {
+		return <div>Loading...</div>;
+	}
 	return (
 		<div className="container min-vh-100 d-flex justify-content-center align-items-center bg-danger bg-gradient">
 			<div className="card shadow-lg w-75 p-4 d-flex flex-row">
@@ -33,8 +62,8 @@ const Profile = () => {
 							onChange={handleImageChange}
 						/>
 					</div>
-					<h2 className="h5">Your Name</h2>
-					<p className="text-muted">Blood Group: -</p>
+					<h2 className="h5">{user.firstName + " " + user.lastName}</h2>
+					<p className="text-muted">Blood Group: {user.bloodType}</p>
 					<nav className="nav flex-column">
 						<button className="btn btn-light mb-2">Dashboard</button>
 						<button className="btn btn-danger text-white mb-2">Profile</button>
@@ -54,25 +83,26 @@ const Profile = () => {
 							/>
 						</div>
 						<div className="col">
-							<p><strong>Name:</strong> -</p>
-							<p><strong>Username:</strong> -</p>
-							<p><strong>Email:</strong> -</p>
-							<p><strong>Mobile:</strong> -</p>
+							<p><strong>Name: {user.firstName + " " + user.lastName}</strong></p>
+							<p><strong>Username:</strong> {user.username}</p>
+							<p><strong>Email:</strong> {user.email}</p>
+							<p><strong>Mobile:</strong> {user.phone_number}</p>
 							<p><strong>Availability:</strong> -</p>
+							<p><strong>Account Created: </strong> {user.createdDate}</p>
 						</div>
 					</div>
 					<div className="row">
 						<div className="col-md-6">
-							<p><strong>Blood Group:</strong> -</p>
+							<p><strong>Blood Group:</strong> {user.bloodType}</p>
 							<p><strong>Last Donate:</strong> -</p>
 							<p><strong>Gender:</strong> -</p>
-							<p><strong>Date of Birth:</strong> -</p>
+							<p><strong>Date of Birth:</strong> {user.dob}</p>
 						</div>
 						<div className="col-md-6">
-							<p><strong>Country:</strong> -</p>
+							<p><strong>Country:</strong> {user.country}</p>
 							<p><strong>State:</strong> -</p>
-							<p><strong>City:</strong> -</p>
-							<p><strong>Address:</strong> -</p>
+							<p><strong>City:</strong> {user.city}</p>
+							<p><strong>Address:</strong> {user.address}</p>
 						</div>
 					</div>
 					<div className="mt-4">
