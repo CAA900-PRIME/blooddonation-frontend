@@ -1,9 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaTint, FaHospital, FaCity, FaPhone, FaGlobe, FaMapMarkerAlt, FaUser } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 function BloodRequest({ user }) { // user prop is passed to get requester_id
+	const navigate = useNavigate()
 	const [loading, setLoading] = useState(false); // Loading effect on submit
 	const [formData, setFormData] = useState({
 		requester_id: user?.id || "",
@@ -35,7 +37,6 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 		}
 		setLoading(true);
 		const requestData = JSON.stringify(formData);
-		console.log(requestData)
 		try {
 			const response = await fetch(`${apiUrl}/api/app/create-application`, {
 				method: "POST",
@@ -48,8 +49,7 @@ function BloodRequest({ user }) { // user prop is passed to get requester_id
 			console.log("Server response:", responseData);
 
 			if (response.ok) {
-				alert("Your blood request has been submitted successfully!");
-				console.log("Blood Request Submitted:", formData);
+				navigate("/dashboard")
 			} else {
 				alert("Failed to submit request. Please try again.");
 			}
