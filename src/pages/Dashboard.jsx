@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -54,6 +54,10 @@ const Dashboard = () => {
         fetchApplications();
     }, []);
 
+    const handleModify = (request) => {
+        navigate("/blood-request", { state: { request } });
+    };
+
     const handleDelete = async (id) => {
         setCreatedRequests(createdRequests.filter(request => request.id !== id));
         alert("Request deleted successfully");
@@ -72,13 +76,15 @@ const Dashboard = () => {
                         <span>Hospital Address: {request.hospital_address}</span>
                         <span>Appointment: {request.appointment}</span>
                         <span>Status: {request.status}</span>
-                        <button className={`btn btn-${btnColor} btn-sm mt-2 w-100`}>
-                            {btnText}
-                        </button>
                         {isCreated && (
-                            <button className="btn btn-danger btn-sm mt-2 w-100" onClick={() => handleDelete(request.id)}>
-                                Delete Request
-                            </button>
+                            <>
+                                <button className="btn btn-primary btn-sm mt-2 w-100" onClick={() => handleModify(request)}>
+                                    Modify Request
+                                </button>
+                                <button className="btn btn-danger btn-sm mt-2 w-100" onClick={() => handleDelete(request.id)}>
+                                    Delete Request
+                                </button>
+                            </>
                         )}
                     </li>
                 ))
