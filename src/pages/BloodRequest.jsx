@@ -116,6 +116,23 @@ function BloodRequest({ user }) {
                             </div>
                         </div>
 
+                        {/* Country & City */}
+                        <div className="mb-3">
+                            <label className="form-label">Country</label>
+                            <input type="text" className="form-control" name="country" value={formData.country} disabled />
+                        </div>
+
+                        <div className="mb-3">
+                            <label className="form-label">City</label>
+                            <input type="text" className="form-control" name="city" value={formData.city} disabled />
+                        </div>
+
+                        {/* Appointment */}
+                        <div className="mb-3">
+                            <label className="form-label">Appointment</label>
+                            <input type="datetime-local" name="appointment" className="form-control" value={formData.appointment} onChange={handleChange} required />
+                        </div>
+
                         {/* Contact Phone Number */}
                         <div className="mb-3">
                             <label className="form-label">Contact Phone Number</label>
