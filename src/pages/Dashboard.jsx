@@ -7,7 +7,30 @@ const Dashboard = () => {
     const navigate = useNavigate();
     const [bloodRequests, setBloodRequests] = useState([]);
     const [appliedRequests, setAppliedRequests] = useState([]);
-    const [createdRequests, setCreatedRequests] = useState([]);
+    const [createdRequests, setCreatedRequests] = useState([
+        {
+            id: 1,
+            username: "John Doe",
+            blood_type: "O+",
+            city: "New York",
+            country: "USA",
+            hospital_name: "NYC General Hospital",
+            hospital_address: "123 Main St, New York",
+            appointment: "2025-04-15",
+            status: "Pending"
+        },
+        {
+            id: 2,
+            username: "Jane Smith",
+            blood_type: "A-",
+            city: "Los Angeles",
+            country: "USA",
+            hospital_name: "LA Health Center",
+            hospital_address: "456 Sunset Blvd, LA",
+            appointment: "2025-04-20",
+            status: "Confirmed"
+        }
+    ]);
     const [acceptedRequests, setAcceptedRequests] = useState([]);
 
     useEffect(() => {
@@ -28,44 +51,12 @@ const Dashboard = () => {
                 console.error('An error occurred:', error);
             }
         };
-
-        const fetchMyApplication = async () => {
-            try {
-                const response = await fetch(`${apiUrl}/api/app/get-my-applications`, {
-                    method: "GET",
-                    credentials: "include",
-                    headers: { 'Content-Type': 'application/json' },
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    setCreatedRequests(data);
-                } else {
-                    console.error('Error fetching data:', data);
-                }
-            } catch (error) {
-                console.error('An error occurred:', error);
-            }
-        };
-        fetchMyApplication();
         fetchApplications();
     }, []);
 
     const handleDelete = async (id) => {
-        try {
-            const response = await fetch(`${apiUrl}/api/app/delete-application/${id}`, {
-                method: "DELETE",
-                credentials: "include",
-                headers: { 'Content-Type': 'application/json' },
-            });
-            if (response.ok) {
-                setCreatedRequests(createdRequests.filter(request => request.id !== id));
-                alert("Request deleted successfully");
-            } else {
-                alert("Failed to delete request");
-            }
-        } catch (error) {
-            console.error("Error deleting request:", error);
-        }
+        setCreatedRequests(createdRequests.filter(request => request.id !== id));
+        alert("Request deleted successfully");
     };
 
     const renderRequestList = (requests, btnText, btnColor, isCreated = false) => (
