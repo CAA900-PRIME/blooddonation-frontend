@@ -60,6 +60,10 @@ function BloodRequest({ user }) {
         setLoading(false);
     };
 
+    const handleCancel = () => {
+        navigate("/dashboard");
+    };
+
     return (
         <div className="container d-flex align-items-center justify-content-center min-vh-100">
             <div className="col-md-8">
@@ -121,10 +125,13 @@ function BloodRequest({ user }) {
                             </div>
                         </div>
 
-                        {/* Submit Button */}
-                        <div className="text-center">
-                            <button type="submit" className="btn btn-danger w-100 py-2" disabled={loading}>
+                        {/* Submit & Cancel Buttons */}
+                        <div className="text-center d-flex gap-2">
+                            <button type="submit" className="btn btn-danger w-50 py-2" disabled={loading}>
                                 {loading ? "Processing..." : isEditing ? "Update Request" : "Submit Request"}
+                            </button>
+                            <button type="button" className="btn btn-secondary w-50 py-2" onClick={handleCancel}>
+                                Cancel Request
                             </button>
                         </div>
                     </form>
