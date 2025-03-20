@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-
+import "bootstrap/dist/css/bootstrap.min.css";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
@@ -50,7 +50,25 @@ const Dashboard = () => {
         fetchApplications();
     }, []);
 
-    const renderRequestList = (requests, btnText, btnColor) => (
+    const handleDelete = async (id) => {
+        try {
+            const response = await fetch(`${apiUrl}/api/app/delete-application/${id}`, {
+                method: "DELETE",
+                credentials: "include",
+                headers: { 'Content-Type': 'application/json' },
+            });
+            if (response.ok) {
+                setCreatedRequests(createdRequests.filter(request => request.id !== id));
+                alert("Request deleted successfully");
+            } else {
+                alert("Failed to delete request");
+            }
+        } catch (error) {
+            console.error("Error deleting request:", error);
+        }
+    };
+
+    const renderRequestList = (requests, btnText, btnColor, isCreated = false) => (
         <ul className="list-group">
             {requests.length > 0 ? (
                 requests.map((request) => (
@@ -66,6 +84,11 @@ const Dashboard = () => {
                         <button className={`btn btn-${btnColor} btn-sm mt-2 w-100`}>
                             {btnText}
                         </button>
+                        {isCreated && (
+                            <button className="btn btn-danger btn-sm mt-2 w-100" onClick={() => handleDelete(request.id)}>
+                                Delete Request
+                            </button>
+                        )}
                     </li>
                 ))
             ) : (
@@ -104,7 +127,7 @@ const Dashboard = () => {
                                 <h4 className="mb-0">Created Requests</h4>
                             </div>
                             <div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-                                {renderRequestList(createdRequests, "Modify Request", "primary")}
+                                {renderRequestList(createdRequests, "Modify Request", "primary", true)}
                             </div>
                         </div>
                     </div>
