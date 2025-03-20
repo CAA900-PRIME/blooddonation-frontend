@@ -2,7 +2,7 @@ import React from "react";
 
 const Footer = () => {
     return (
-        <footer className="bg-dark text-white text-center py-2 mt-auto fixed-bottom w-100" style={{ fontSize: "0.8rem", fontFamily: "'Poppins', sans-serif" }}>
+        <footer className="bg-dark text-white text-center py-2 mt-auto w-100" style={{ fontSize: "0.8rem", fontFamily: "'Poppins', sans-serif" }}>
             <div className="container">
                 <p className="mb-1">&copy; 2025 CAA900-PRIME. All Rights Reserved.</p>
                 <p className="mb-1">Empowering Collaboration, Innovation, and Excellence.</p>
