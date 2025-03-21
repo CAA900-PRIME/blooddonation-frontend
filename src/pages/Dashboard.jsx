@@ -1,117 +1,137 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import { FiHome, FiUser, FiHeart, FiBarChart2 } from "react-icons/fi";
+import { useNavigate, useLocation } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
-
-const Sidebar = () => (
-  <div className="sidebar bg-danger text-white vh-100 p-3 position-fixed shadow" style={{ width: "260px" }}>
-    <h2 className="mb-4 text-center fw-bold">Dashboard</h2>
-    <ul className="nav flex-column">
-      <li className="nav-item mb-3">
-        <Link to="/dashboard" className="nav-link text-white"><FiHome className="me-2" /> Dashboard</Link>
-      </li>
-      <li className="nav-item mb-3">
-        <Link to="/users" className="nav-link text-white"><FiUser className="me-2" /> Users</Link>
-      </li>
-      <li className="nav-item mb-3">
-        <Link to="/donations" className="nav-link text-white"><FiHeart className="me-2" /> Donations</Link>
-      </li>
-      <li className="nav-item">
-        <Link to="/info" className="nav-link text-white"><FiBarChart2 className="me-2" /> Info</Link>
-      </li>
-    </ul>
-  </div>
-);
-
-const Navbar = () => (
-  <div className="navbar bg-white shadow p-3" style={{ marginLeft: "260px" }}>
-    <h2 className="d-inline-block text-danger fw-bold">Blood Donation Dashboard</h2>
-    <div className="float-end">
-      <button className="btn btn-light border me-2">🔔 Notifications</button>
-      <button className="btn btn-danger">👤 Profile</button>
-    </div>
-  </div>
-);
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
-  const [bloodRequests, setBloodRequests] = useState([]);
-
-  useEffect(() => {
-    // Simulated fetch request (Replace with actual API call later)
-    setBloodRequests([
-      { id: 1, fullName: "John Doe", bloodGroup: "A+", city: "New York", hospital: "City Hospital" },
-      { id: 2, fullName: "Jane Smith", bloodGroup: "O-", city: "Los Angeles", hospital: "LA Medical Center" },
-      { id: 3, fullName: "Michael Brown", bloodGroup: "B+", city: "Chicago", hospital: "Chicago General" },
+    const navigate = useNavigate();
+    const [bloodRequests, setBloodRequests] = useState([]);
+    const [appliedRequests, setAppliedRequests] = useState([]);
+    const [createdRequests, setCreatedRequests] = useState([
+        {
+            id: 1,
+            username: "John Doe",
+            blood_type: "O+",
+            city: "New York",
+            country: "USA",
+            hospital_name: "NYC General Hospital",
+            hospital_address: "123 Main St, New York",
+            appointment: "2025-04-15",
+            status: "Pending"
+        },
+        {
+            id: 2,
+            username: "Jane Smith",
+            blood_type: "A-",
+            city: "Los Angeles",
+            country: "USA",
+            hospital_name: "LA Health Center",
+            hospital_address: "456 Sunset Blvd, LA",
+            appointment: "2025-04-20",
+            status: "Confirmed"
+        }
     ]);
-  }, []);
+    const [acceptedRequests, setAcceptedRequests] = useState([]);
 
-  return (
-    <div className="d-flex">
-      <Sidebar />
-      <div className="content p-4 w-75" style={{ marginLeft: "260px" }}>
-        <Navbar />
-        <div className="mt-4">
-          <h3 className="text-center text-danger fw-bold">Dashboard Overview</h3>
-          <div className="row mt-3">
-            <div className="col-md-4">
-              <div className="card text-center shadow border-0 bg-danger text-white p-3">
-                <h5>Total Donations</h5>
-                <p className="fs-4 fw-bold">120</p>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card text-center shadow border-0 bg-danger text-white p-3">
-                <h5>Active Users</h5>
-                <p className="fs-4 fw-bold">35</p>
-              </div>
-            </div>
-            <div className="col-md-4">
-              <div className="card text-center shadow border-0 bg-danger text-white p-3">
-                <h5>Pending Requests</h5>
-                <p className="fs-4 fw-bold">10</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+    useEffect(() => {
+        const fetchApplications = async () => {
+            try {
+                const response = await fetch(`${apiUrl}/api/app/get-applications`, {
+                    method: "GET",
+                    credentials: "include",
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    setBloodRequests(data);
+                } else {
+                    console.error('Error fetching data:', data);
+                }
+            } catch (error) {
+                console.error('An error occurred:', error);
+            }
+        };
+        fetchApplications();
+    }, []);
 
-      {/* Right Sidebar - Blood Requests List */}
-      <div className="p-4 bg-light w-25 vh-100 overflow-auto border-start shadow-sm">
-        <h4 className="text-center text-danger fw-bold">Blood Requests</h4>
+    const handleModify = (request) => {
+        navigate("/blood-request", { state: { request } });
+    };
+
+    const handleDelete = async (id) => {
+        setCreatedRequests(createdRequests.filter(request => request.id !== id));
+        alert("Request deleted successfully");
+    };
+
+    const renderRequestList = (requests, btnText, btnColor, isCreated = false) => (
         <ul className="list-group">
-          {bloodRequests.length > 0 ? (
-            bloodRequests.map((request) => (
-              <li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
-                <strong className="text-danger">{request.fullName}</strong> 
-                <span>Blood Group: <span className="badge bg-danger">{request.bloodGroup}</span></span>
-                <span>City: {request.city}</span>
-                <span>Hospital: {request.hospital}</span>
-              </li>
-            ))
-          ) : (
-            <p className="text-center">No blood requests available.</p>
-          )}
+            {requests.length > 0 ? (
+                requests.map((request) => (
+                    <li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
+                        <strong className="text-danger">{request.username}</strong>
+                        <span>Blood Group: <span className="badge bg-danger">{request.blood_type}</span></span>
+                        <span>City: {request.city}</span>
+                        <span>Country: {request.country}</span>
+                        <span>Hospital Name: {request.hospital_name}</span>
+                        <span>Hospital Address: {request.hospital_address}</span>
+                        <span>Appointment: {request.appointment}</span>
+                        <span>Status: {request.status}</span>
+                        {isCreated && (
+                            <>
+                                <button className="btn btn-primary btn-sm mt-2 w-100" onClick={() => handleModify(request)}>
+                                    Modify Request
+                                </button>
+                                <button className="btn btn-danger btn-sm mt-2 w-100" onClick={() => handleDelete(request.id)}>
+                                    Delete Request
+                                </button>
+                            </>
+                        )}
+                    </li>
+                ))
+            ) : (
+                <p className="text-center">No requests available.</p>
+            )}
         </ul>
-      </div>
+    );
 
-      {/* Custom Styles */}
-      <style>
-        {`
-          body {
-            background: linear-gradient(to right,rgb(255, 255, 255),rgb(254, 232, 227));
-          }
-          .card:hover {
-            transform: scale(1.05);
-            transition: 0.3s ease-in-out;
-          }
-          .list-group-item:hover {
-            background: #f8d7da;
-            transition: 0.3s;
-          }
-        `}
-      </style>
-    </div>
-  );
+    return (
+        <div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
+            <div className="container-fluid mt-4">
+                <div className="row">
+                    <div className="col-md-4">
+                        <div className="card shadow-sm">
+                            <div className="card-header bg-danger text-white text-center">
+                                <h4 className="mb-0">Blood Requests</h4>
+                            </div>
+                            <div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
+                                {renderRequestList(bloodRequests, "Apply", "danger")}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <div className="card shadow-sm">
+                            <div className="card-header bg-success text-white text-center">
+                                <h4 className="mb-0">Accepted Requests</h4>
+                            </div>
+                            <div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
+                                {renderRequestList(acceptedRequests, "Accepted ✅", "success")}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="col-md-4">
+                        <div className="card shadow-sm">
+                            <div className="card-header bg-primary text-white text-center">
+                                <h4 className="mb-0">Created Requests</h4>
+                            </div>
+                            <div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
+                                {renderRequestList(createdRequests, "Modify Request", "primary", true)}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    );
 };
 
 export default Dashboard;

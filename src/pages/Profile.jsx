@@ -6,16 +6,7 @@ const Profile = () => {
   const [image, setImage] = useState(null);
 
   const handleImageChange = (event) => {
-    const file = event.target.files[0];
-    if (file) {
-      setImage(URL.createObjectURL(file));
-    }
-  };
-
-  return (
-    <div className="container min-vh-100 d-flex justify-content-center align-items-center bg-danger bg-gradient">
-      <div className="card shadow-lg w-75 p-4 d-flex flex-row">
-        <aside className="border-end pe-4 text-center">
+	@@ -19,10 +19,10 @@ const MyProfile = () => {
           <div className="position-relative mb-3">
             <label htmlFor="profile-image" className="cursor-pointer">
               <img
@@ -26,11 +17,7 @@ const Profile = () => {
               />
               <FaCamera className="position-absolute bottom-0 end-0 bg-light p-1 rounded-circle" />
             </label>
-            <input
-              type="file"
-              id="profile-image"
-              accept="image/*"
-              className="d-none"
+	@@ -34,55 +34,55 @@ const MyProfile = () => {
               onChange={handleImageChange}
             />
           </div>
