@@ -18,23 +18,63 @@ const Signup = () => {
 		city: "",
 		country: "",
 		postalCode: "",
-		gender: "",
-		bloodType: "",
+		sex: "",
+		blood_type: ""
 	});
 
 	const [showPassword, setShowPassword] = useState(false);
+	const [countries, setCountries] = useState([]);
+	const [cities, setCities] = useState([]);
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		const fetchCountries = async () => {
+			try {
+				const response = await fetch(`${apiUrl}/api/country/get-countries`);
+				if (!response.ok) {
+					const err = await response.json();
+					throw new Error(err.error);
+				}
+				const data = await response.json();
+				setCountries(data.countries);
+			} catch (error) {
+				console.error("Error fetching countries:", error);
+			}
+		};
+
 		if (localStorage.getItem("user")) {
 			navigate("/dashboard");
 		}
+		fetchCountries();
 	}, [navigate]);
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
 	};
+
+	const handleCountryChange = async (event) => {
+		const selectedCountry = event.target.value;
+		setFormData((prevData) => ({
+			...prevData,
+			country: selectedCountry,
+			city: "",
+		}));
+
+		console.log(selectedCountry)
+
+		try {
+			const response = await fetch(`${apiUrl}/api/city/get-cities-of-country/${selectedCountry}`);
+			if (!response.ok) {
+				throw new Error("Failed to fetch cities");
+			}
+			const data = await response.json();
+			setCities(data.cities);
+		} catch (error) {
+			console.error("Error fetching cities:", error);
+			setCities([]);
+		}
+	}
 
 	const handleCreateAccount = async () => {
 		const {
@@ -50,8 +90,8 @@ const Signup = () => {
 			city,
 			country,
 			postalCode,
-			gender,
-			bloodType,
+			sex,
+			blood_type,
 		} = formData;
 
 		if (
@@ -67,8 +107,8 @@ const Signup = () => {
 			!city ||
 			!country ||
 			!postalCode ||
-			!gender ||
-			!bloodType
+			!sex ||
+			!blood_type
 		) {
 			setError("Please fill out all required fields.");
 			return;
@@ -96,17 +136,16 @@ const Signup = () => {
 					city,
 					country,
 					postalCode,
-					gender,
-					bloodType,
+					sex,
+					blood_type,
 				}),
 			});
 
 			if (response.ok) {
 				navigate("/login");
 			} else {
-				const errorData = await response.json();
-				console.log(errorData);
-				setError(errorData.message || "Account creation failed.");
+				const err = await response.json();
+				setError(err.error || "Account creation failed.");
 			}
 		} catch (error) {
 			setError("An unexpected error occurred. Please try again.");
@@ -295,14 +334,17 @@ const Signup = () => {
 									name="country"
 									className="form-select"
 									value={formData.country}
-									onChange={handleChange}
+									onChange={handleCountryChange}
 									required
 								>
-									<option value="">Select Country</option>
-									<option value="USA">USA</option>
-									<option value="Canada">Canada</option>
-									<option value="India">India</option>
-									<option value="UK">UK</option>
+									<option disabled value="">Select Country</option>
+									{countries.length > 0 ? (
+										countries.map((country, index) => (
+											<option key={index} value={country.name}>{country.name}</option>
+										))
+									) : (
+										<option disabled>Loading...</option>
+									)}
 								</select>
 							</div>
 							<div className="col-md-6 mb-3">
@@ -311,13 +353,17 @@ const Signup = () => {
 									className="form-select"
 									value={formData.city}
 									onChange={handleChange}
+									disabled={!formData.country}
 									required
 								>
-									<option value="">Select City</option>
-									<option value="New York">New York</option>
-									<option value="Toronto">Toronto</option>
-									<option value="Mumbai">Mumbai</option>
-									<option value="London">London</option>
+									<option disabled value="">Select City</option>
+									{cities.length > 0 ? (
+										cities.map((city, index) => (
+											<option key={index} value={city.name}>{city.name}</option>
+										))
+									) : (
+										<option disabled>No cities available</option>
+									)}
 								</select>
 							</div>
 						</div>
@@ -325,27 +371,27 @@ const Signup = () => {
 						<div className="row">
 							<div className="col-md-6 mb-3">
 								<select
-									name="gender"
+									name="sex"
 									className="form-select"
-									value={formData.gender}
+									value={formData.sex}
 									onChange={handleChange}
 									required
 								>
-									<option value="">Select Gender</option>
-									<option value="Male">Male</option>
-									<option value="Female">Female</option>
-									<option value="Other">Other</option>
+									<option disabled value="">Select Sex</option>
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+									<option value="other">Other</option>
 								</select>
 							</div>
 							<div className="col-md-6 mb-3">
 								<select
-									name="bloodType"
+									name="blood_type"
 									className="form-select"
-									value={formData.bloodType}
+									value={formData.blood_type}
 									onChange={handleChange}
 									required
 								>
-									<option value="">Select Blood Type</option>
+									<option disabled value="">Select Blood Type</option>
 									<option value="A+">A+</option>
 									<option value="A-">A-</option>
 									<option value="B+">B+</option>
@@ -382,7 +428,7 @@ const Signup = () => {
 						</div>
 					</form>
 				</div>
-			</div>
+			</div >
 
 			<style>
 				{`
@@ -400,7 +446,7 @@ const Signup = () => {
           }
         `}
 			</style>
-		</div>
+		</div >
 	);
 };
 
