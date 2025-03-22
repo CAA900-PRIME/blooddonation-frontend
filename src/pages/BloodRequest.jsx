@@ -27,7 +27,7 @@ function BloodRequest({ user }) {
 
 	const handleSubmit = async (e) => {
 		e.preventDefault();
-		if (!formData.blood_type || !formData.hospital_name || !formData.phone_number) {
+		if (!formData.hospital_name || !formData.phone_number) {
 			alert("Please fill in all required fields.");
 			return;
 		}
