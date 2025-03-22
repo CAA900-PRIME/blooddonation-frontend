@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import signupImage from "../assets/signup_image.jpg";
+
 const apiUrl = import.meta.env.VITE_API_URL;
+
 const Signup = () => {
 	const [formData, setFormData] = useState({
 		firstName: "",
@@ -16,16 +18,17 @@ const Signup = () => {
 		city: "",
 		country: "",
 		postalCode: "",
+		gender: "",
+		bloodType: "",
 	});
 
 	const [showPassword, setShowPassword] = useState(false);
 	const [error, setError] = useState("");
 	const navigate = useNavigate();
 
-	{/* we need to redirect to dashboard if loggedin */ }
 	useEffect(() => {
-		if (localStorage.getItem('user')) {
-			navigate('/dashboard');
+		if (localStorage.getItem("user")) {
+			navigate("/dashboard");
 		}
 	}, [navigate]);
 
@@ -47,9 +50,10 @@ const Signup = () => {
 			city,
 			country,
 			postalCode,
+			gender,
+			bloodType,
 		} = formData;
 
-		// Basic validation
 		if (
 			!username ||
 			!firstName ||
@@ -62,11 +66,14 @@ const Signup = () => {
 			!homeAddress ||
 			!city ||
 			!country ||
-			!postalCode
+			!postalCode ||
+			!gender ||
+			!bloodType
 		) {
 			setError("Please fill out all required fields.");
 			return;
 		}
+
 		if (password !== confirmPassword) {
 			setError("Passwords do not match.");
 			return;
@@ -89,6 +96,8 @@ const Signup = () => {
 					city,
 					country,
 					postalCode,
+					gender,
+					bloodType,
 				}),
 			});
 
@@ -106,19 +115,10 @@ const Signup = () => {
 
 	return (
 		<div className="container d-flex align-items-center justify-content-center py-4">
-			{/* 
-        .row with .shadow-lg .rounded-4 .overflow-hidden => card with uniform corners
-        position: relative => we can place the blurred background behind everything (zIndex: 0)
-        minHeight: 450px so there's enough vertical space
-      */}
 			<div
 				className="row shadow-lg rounded-4 overflow-hidden w-100"
 				style={{ maxWidth: "1100px", minHeight: "450px", position: "relative" }}
 			>
-				{/* 
-          1) The blurred background (absolutely positioned) 
-             uses the same signupImage, blurred.
-        */}
 				<div
 					style={{
 						position: "absolute",
@@ -132,10 +132,6 @@ const Signup = () => {
 					}}
 				></div>
 
-				{/*
-          2) Foreground columns at zIndex:1:
-             - The left image has a "fade-edge" mask so it merges gracefully with the blurred background.
-        */}
 				<div
 					className="col-md-5 d-flex align-items-center justify-content-center p-3"
 					style={{ zIndex: 1 }}
@@ -281,31 +277,6 @@ const Signup = () => {
 							/>
 						</div>
 
-						<div className="row">
-							<div className="col-md-6 mb-3">
-								<input
-									type="text"
-									name="city"
-									className="form-control"
-									placeholder="City"
-									value={formData.city}
-									onChange={handleChange}
-									required
-								/>
-							</div>
-							<div className="col-md-6 mb-3">
-								<input
-									type="text"
-									name="country"
-									className="form-control"
-									placeholder="Country"
-									value={formData.country}
-									onChange={handleChange}
-									required
-								/>
-							</div>
-						</div>
-
 						<div className="mb-3">
 							<input
 								type="text"
@@ -316,6 +287,75 @@ const Signup = () => {
 								onChange={handleChange}
 								required
 							/>
+						</div>
+
+						<div className="row">
+							<div className="col-md-6 mb-3">
+								<select
+									name="country"
+									className="form-select"
+									value={formData.country}
+									onChange={handleChange}
+									required
+								>
+									<option value="">Select Country</option>
+									<option value="USA">USA</option>
+									<option value="Canada">Canada</option>
+									<option value="India">India</option>
+									<option value="UK">UK</option>
+								</select>
+							</div>
+							<div className="col-md-6 mb-3">
+								<select
+									name="city"
+									className="form-select"
+									value={formData.city}
+									onChange={handleChange}
+									required
+								>
+									<option value="">Select City</option>
+									<option value="New York">New York</option>
+									<option value="Toronto">Toronto</option>
+									<option value="Mumbai">Mumbai</option>
+									<option value="London">London</option>
+								</select>
+							</div>
+						</div>
+
+						<div className="row">
+							<div className="col-md-6 mb-3">
+								<select
+									name="gender"
+									className="form-select"
+									value={formData.gender}
+									onChange={handleChange}
+									required
+								>
+									<option value="">Select Gender</option>
+									<option value="Male">Male</option>
+									<option value="Female">Female</option>
+									<option value="Other">Other</option>
+								</select>
+							</div>
+							<div className="col-md-6 mb-3">
+								<select
+									name="bloodType"
+									className="form-select"
+									value={formData.bloodType}
+									onChange={handleChange}
+									required
+								>
+									<option value="">Select Blood Type</option>
+									<option value="A+">A+</option>
+									<option value="A-">A-</option>
+									<option value="B+">B+</option>
+									<option value="B-">B-</option>
+									<option value="AB+">AB+</option>
+									<option value="AB-">AB-</option>
+									<option value="O+">O+</option>
+									<option value="O-">O-</option>
+								</select>
+							</div>
 						</div>
 
 						<p className="small text-muted text-center">
@@ -344,13 +384,8 @@ const Signup = () => {
 				</div>
 			</div>
 
-			{/* Inline style for the fade-edge class (or place in a separate CSS file) */}
 			<style>
 				{`
-          /* 
-            Masks the right edge of the image so it fades to transparent.
-            This merges smoothly with the blurred background behind it.
-          */
           .fade-edge-img {
             -webkit-mask-image: linear-gradient(
               to right,
