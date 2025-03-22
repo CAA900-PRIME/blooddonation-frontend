@@ -77,7 +77,7 @@ const Dashboard = () => {
 
 	const handleDelete = async (id) => {
 		try {
-			const response = await fetch(`/delete-application`, {
+			const response = await fetch(`${apiUrl}/api/app/delete-application`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
