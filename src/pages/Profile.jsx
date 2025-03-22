@@ -117,7 +117,6 @@ const Profile = () => {
 						</div>
 						<div className="col-md-6">
 							<p><strong>Country:</strong> {user?.country || "-"}</p>
-							<p><strong>State:</strong> {user?.state || "-"}</p>
 							<p><strong>City:</strong> {user?.city || "-"}</p>
 <<<<<<< HEAD
 							<p><strong>Address:</strong> {user?.homeAddress || "-"}</p>
@@ -127,11 +126,14 @@ const Profile = () => {
 							<p><strong>Address:</strong> {user?.home_address || "-"}</p>
 						</div>
 					</div>
+<<<<<<< HEAD
 
 					<div className="mt-4">
 						<p><strong>Social Media:</strong> -</p>
 					</div>
 >>>>>>> ccb4744 (fix: get-my-applications added on dashbaord, minor tweaks on profile page to match the backend)
+=======
+>>>>>>> 0f7a93c (update & fix: minor update to bloodRequest, adding api request to delete blood request applications of logged in users. Added get-countries and get-cities api request in sign up page. Tested)
 				</main>
 			</div>
 		</div>
