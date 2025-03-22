@@ -5,7 +5,7 @@ import Signup from "../pages/Signup";
 import Dashboard from "../pages/Dashboard";
 import InfoPage from "../pages/InfoPage";
 import BloodRequest from "../pages/BloodRequest";
-import Profile from "../pages/Profile";
+import Profile from "../pages/Profile.jsx";
 import ForgotPassword from "../pages/forgot-password";
 
 const AppRoutes = ({ user, setUser }) => {
