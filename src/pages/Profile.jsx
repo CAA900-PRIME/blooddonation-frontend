@@ -88,14 +88,9 @@ const Profile = () => {
 						</div>
 						<div className="col-md-6">
 							<p><strong>Country:</strong> {user?.country || "-"}</p>
-							<p><strong>State:</strong> {user?.state || "-"}</p>
 							<p><strong>City:</strong> {user?.city || "-"}</p>
 							<p><strong>Address:</strong> {user?.home_address || "-"}</p>
 						</div>
-					</div>
-
-					<div className="mt-4">
-						<p><strong>Social Media:</strong> -</p>
 					</div>
 				</main>
 			</div>

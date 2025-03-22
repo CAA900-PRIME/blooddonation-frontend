@@ -76,8 +76,25 @@ const Dashboard = () => {
 	};
 
 	const handleDelete = async (id) => {
-		setCreatedRequests(createdRequests.filter(request => request.id !== id));
-		alert("Request deleted successfully");
+		try {
+			const response = await fetch(`/delete-application`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				credentials: "include",
+				body: JSON.stringify({ app_id: id }),
+			});
+
+			if (!response.ok) {
+				const errorData = await response.json();
+				throw new Error(errorData.error || "Failed to delete request");
+			}
+			setCreatedRequests(createdRequests.filter(request => request.id !== id));
+			alert("Request deleted successfully");
+		} catch (error) {
+			alert(`Error: ${error.message}`);
+		}
 	};
 
 	const renderRequestList = (requests, btnText, btnColor, isCreated = false) => (
