@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import { FaTint, FaHospital, FaCity, FaPhone, FaGlobe, FaMapMarkerAlt, FaUser } from "react-icons/fa";
+import { FaHospital, FaPhone, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
 
@@ -50,7 +50,8 @@ function BloodRequest({ user }) {
 				alert(isEditing ? "Request updated successfully!" : "Request submitted successfully!");
 				navigate("/dashboard");
 			} else {
-				alert("Failed to process request. Please try again.");
+				const err = await response.json();
+				alert(err.error);
 			}
 		} catch (error) {
 			console.error("Error submitting blood request:", error);

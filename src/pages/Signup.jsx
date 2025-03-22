@@ -33,7 +33,8 @@ const Signup = () => {
 			try {
 				const response = await fetch(`${apiUrl}/api/country/get-countries`);
 				if (!response.ok) {
-					throw new Error("Failed to fetch countries");
+					const err = await response.json();
+					throw new Error(err.error);
 				}
 				const data = await response.json();
 				setCountries(data.countries);
@@ -143,9 +144,8 @@ const Signup = () => {
 			if (response.ok) {
 				navigate("/login");
 			} else {
-				const errorData = await response.json();
-				console.log(errorData);
-				setError(errorData.message || "Account creation failed.");
+				const err = await response.json();
+				setError(err.error || "Account creation failed.");
 			}
 		} catch (error) {
 			setError("An unexpected error occurred. Please try again.");
