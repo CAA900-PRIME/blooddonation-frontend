@@ -18,7 +18,7 @@ const Signup = () => {
 		city: "",
 		country: "",
 		postalCode: "",
-		gender: "",
+		sex: "",
 		bloodType: "",
 	});
 
@@ -67,7 +67,7 @@ const Signup = () => {
 			!city ||
 			!country ||
 			!postalCode ||
-			!gender ||
+			!sex ||
 			!bloodType
 		) {
 			setError("Please fill out all required fields.");
@@ -325,16 +325,16 @@ const Signup = () => {
 						<div className="row">
 							<div className="col-md-6 mb-3">
 								<select
-									name="gender"
+									name="sex"
 									className="form-select"
-									value={formData.gender}
+									value={formData.sex}
 									onChange={handleChange}
 									required
 								>
-									<option value="">Select Gender</option>
-									<option value="Male">Male</option>
-									<option value="Female">Female</option>
-									<option value="Other">Other</option>
+									<option disabled value="">Select Sex</option>
+									<option value="male">Male</option>
+									<option value="female">Female</option>
+									<option value="other">Other</option>
 								</select>
 							</div>
 							<div className="col-md-6 mb-3">
