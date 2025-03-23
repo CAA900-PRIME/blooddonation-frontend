@@ -11,11 +11,22 @@ const VerifyOTP = () => {
 
     const [otp, setOtp] = useState("");
     const [newPassword, setNewPassword] = useState("");
+    const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
 
     const handleVerifyOTP = async () => {
-        if (!email || !otp || !newPassword) {
+        if (!email || !otp || !newPassword || !confirmPassword) {
             alert("Please complete all fields.");
+            return;
+        }
+
+        if (newPassword !== confirmPassword) {
+            alert("Passwords do not match.");
+            return;
+        }
+
+        if (newPassword.length < 6) {
+            alert("Password should be at least 6 characters long.");
             return;
         }
 
@@ -65,6 +76,17 @@ const VerifyOTP = () => {
                         placeholder="New Password"
                         value={newPassword}
                         onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                </div>
+
+                <div className="input-group mb-3">
+                    <span className="input-group-text bg-danger text-white"><FaLock /></span>
+                    <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Confirm Password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
 
