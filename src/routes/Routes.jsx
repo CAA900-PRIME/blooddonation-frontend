@@ -7,6 +7,7 @@ import InfoPage from "../pages/InfoPage";
 import BloodRequest from "../pages/BloodRequest";
 import Profile from "../pages/Profile.jsx";
 import ForgotPassword from "../pages/forgot-password";
+import VerifyOTP from "../pages/verify-otp";
 
 const AppRoutes = ({ user, setUser }) => {
     const isDev = process.env.NODE_ENV === "development";
@@ -16,6 +17,7 @@ const AppRoutes = ({ user, setUser }) => {
             <Route path="/login" element={<Login setUser={setUser} />} />
             <Route path="/signup" element={<Signup />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/verify-otp" element={<VerifyOTP />} />
             {/* Ensure to redirect user to login if they aren't logged in, unless in development mode */}
             <Route path="/dashboard" element={isDev || user ? <Dashboard user={user} /> : <Login setUser={setUser} />} />
             <Route path="/info" element={isDev || user ? <InfoPage user={user} /> : <Login setUser={setUser} />} />
