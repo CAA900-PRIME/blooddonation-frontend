@@ -45,8 +45,29 @@ const Dashboard = () => {
 			}
 		};
 
+
+		const fetchAppliedApplication = async () => {
+			try {
+				const response = await fetch(`${apiUrl}/api/app/get-applied-applications`, {
+					method: "GET",
+					credentials: "include",
+					headers: { 'Content-Type': 'application/json' },
+				});
+				const data = await response.json();
+				if (response.ok) {
+					setAcceptedRequests(data);
+				} else {
+					console.error('Error fetching data:', data);
+				}
+			} catch (error) {
+				console.error('An error occurred:', error);
+			}
+		};
+
+
 		fetchApplications();
 		fetchMyApplication();
+		fetchAppliedApplication();
 	}, []);
 
 	const handleModify = (request) => {
@@ -76,29 +97,28 @@ const Dashboard = () => {
 		}
 	};
 
-	const handleApply = async (applicationId) => {
+	const handleApply = async (id) => {
 		try {
-			const response = await fetch(`${apiUrl}/api/app/apply`, {
+			const response = await fetch(`${apiUrl}/api/app/apply-application`, {
 				method: "POST",
 				headers: {
 					"Content-Type": "application/json",
 				},
 				credentials: "include",
-				body: JSON.stringify({ applicationId }),
+				body: JSON.stringify({ app_id: id }),
 			});
 
 			const data = await response.json();
 			if (response.ok) {
 				alert("Applied successfully!");
-
 				// Find and move request from bloodRequests to acceptedRequests
-				const appliedRequest = bloodRequests.find(req => req.id === applicationId);
+				const appliedRequest = bloodRequests.find(req => req.id === id);
 				if (appliedRequest) {
 					setAcceptedRequests(prev => [...prev, appliedRequest]);
-					setBloodRequests(prev => prev.filter(req => req.id !== applicationId));
+					setBloodRequests(prev => prev.filter(req => req.id !== id));
 				}
 			} else {
-				alert(data.message || "Failed to apply.");
+				alert(data.error);
 			}
 		} catch (error) {
 			alert("An error occurred while applying.");

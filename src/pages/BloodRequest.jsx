@@ -37,8 +37,7 @@ function BloodRequest({ user }) {
 			const url = isEditing
 				? `${apiUrl}/api/app/update-application/${existingRequest.id}`
 				: `${apiUrl}/api/app/create-application`;
-			const method = isEditing ? "PUT" : "POST";
-
+			const method = "POST"
 			const response = await fetch(url, {
 				method,
 				headers: { "Content-Type": "application/json" },
