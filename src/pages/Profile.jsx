@@ -36,7 +36,7 @@ const Profile = () => {
 								className="rounded-circle border img-fluid"
 								style={{ width: "100px", height: "100px" }}
 							/>
-							<FaCamera className="position-absolute bottom-0 end-0 bg-light p-1 rounded-circle" />
+							<FaCamera className="position-absolute bottom-0 end-0 bg-light p-1 rounded-circle" style={{ fontSize: "32px" }} />
 						</label>
 						<input
 							id="profile-image"
@@ -49,7 +49,6 @@ const Profile = () => {
 					<h2 className="h5">
 						{user?.firstName || "-"} {user?.lastName || "-"}
 					</h2>
-					<p className="text-muted">Blood Group: {user?.blood_type || "-"}</p>
 					<nav className="nav flex-column">
 						<button className="btn btn-light mb-2">Dashboard</button>
 						<button className="btn btn-danger text-white mb-2">Profile</button>
@@ -82,7 +81,6 @@ const Profile = () => {
 						</div>
 						<div className="col-md-6">
 							<p><strong>Country:</strong> {user?.country || "-"}</p>
-							<p><strong>State:</strong> {user?.state || "-"}</p>
 							<p><strong>City:</strong> {user?.city || "-"}</p>
 							<p><strong>Address:</strong> {user?.home_address || "-"}</p>
 						</div>
@@ -104,7 +102,7 @@ const Profile = () => {
 							/>
 						</div>
 						<div className="col-md-3">
-							<button className="btn btn-outline-secondary">Change password</button>
+							<button className="btn btn-outline-secondary" style={{ width: "170px" }}>Change password</button>
 						</div>
 					</div>
 
@@ -116,7 +114,7 @@ const Profile = () => {
 							<small className="text-primary"> Recommended</small>
 						</div>
 						<div className="col-md-3">
-							<button className="btn btn-danger">Set up now</button>
+							<button className="btn btn-danger" style={{ width: "170px" }}>Set up now</button>
 						</div>
 					</div>
 				</main>

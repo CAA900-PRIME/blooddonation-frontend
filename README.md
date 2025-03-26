@@ -6,11 +6,10 @@ Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
 - [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
-
 ### Setup
 Please ensure nodejs is installed following the link [nodejs](https://nodejs.org/en). If you already have nodejs installed, you can go ahead to start the front-end server by using the following command
 
-Download Libraries
+Download Libraries/Packages
 
 ```bash
 npm install
@@ -43,9 +42,10 @@ npm run dev -- --host --port 3000
 
 This will ensure it exposes port 3000. If any port is specified after that flag, it will use the specified port instead.
 
+>[!NOTE]
+> Using the command `npm install` will ensure to install all required packages that are wihtin the `package.json` file.
 
-## 📦 Required Dependencies for Home Page
-
+#### Required Dependencies for Home Page 
 Make sure you install the following packages before running the project:
 
 ```bash
@@ -54,4 +54,4 @@ npm install bootstrap
 npm install lottie-react
 npm install framer-motion
 npm install react-icons
-
+```
