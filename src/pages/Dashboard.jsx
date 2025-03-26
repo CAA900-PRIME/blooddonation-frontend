@@ -5,7 +5,6 @@ const apiUrl = import.meta.env.VITE_API_URL;
 const Dashboard = () => {
 	const navigate = useNavigate();
 	const [bloodRequests, setBloodRequests] = useState([]);
-	const [appliedRequests, setAppliedRequests] = useState([]);
 	const [createdRequests, setCreatedRequests] = useState([]);
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 
@@ -27,6 +26,7 @@ const Dashboard = () => {
 				console.error('An error occurred:', error);
 			}
 		};
+
 		const fetchMyApplication = async () => {
 			try {
 				const response = await fetch(`${apiUrl}/api/app/get-my-applications`, {
@@ -44,8 +44,9 @@ const Dashboard = () => {
 				console.error('An error occurred:', error);
 			}
 		};
-		fetchMyApplication();
+
 		fetchApplications();
+		fetchMyApplication();
 	}, []);
 
 	const handleModify = (request) => {
@@ -67,6 +68,7 @@ const Dashboard = () => {
 				const errorData = await response.json();
 				throw new Error(errorData.error || "Failed to delete request");
 			}
+
 			setCreatedRequests(createdRequests.filter(request => request.id !== id));
 			alert("Request deleted successfully");
 		} catch (error) {
@@ -88,7 +90,13 @@ const Dashboard = () => {
 			const data = await response.json();
 			if (response.ok) {
 				alert("Applied successfully!");
-				setAppliedRequests([...appliedRequests, applicationId]);
+
+				// Find and move request from bloodRequests to acceptedRequests
+				const appliedRequest = bloodRequests.find(req => req.id === applicationId);
+				if (appliedRequest) {
+					setAcceptedRequests(prev => [...prev, appliedRequest]);
+					setBloodRequests(prev => prev.filter(req => req.id !== applicationId));
+				}
 			} else {
 				alert(data.message || "Failed to apply.");
 			}
@@ -137,6 +145,7 @@ const Dashboard = () => {
 		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 			<div className="container-fluid mt-4">
 				<div className="row">
+					{/* Blood Requests Section */}
 					<div className="col-md-4">
 						<div className="card shadow-sm">
 							<div className="card-header bg-danger text-white text-center">
@@ -147,6 +156,8 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
+
+					{/* Accepted Requests Section */}
 					<div className="col-md-4">
 						<div className="card shadow-sm">
 							<div className="card-header bg-success text-white text-center">
@@ -157,6 +168,8 @@ const Dashboard = () => {
 							</div>
 						</div>
 					</div>
+
+					{/* Created Requests Section */}
 					<div className="col-md-4">
 						<div className="card shadow-sm">
 							<div className="card-header bg-primary text-white text-center">
