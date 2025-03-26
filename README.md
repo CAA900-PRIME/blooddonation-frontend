@@ -42,3 +42,6 @@ npm run dev -- --host --port 3000
 ```
 
 This will ensure it exposes port 3000. If any port is specified after that flag, it will use the specified port instead.
+
+
+npm install lottie-react react-icons # the dependencies
