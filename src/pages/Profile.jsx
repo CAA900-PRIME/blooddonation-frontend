@@ -1,26 +1,63 @@
 import React, { useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa";
+const apiUrl = import.meta.env.VITE_API_URL;
 
 const Profile = () => {
 	const [image, setImage] = useState(null);
 	const [user, setUser] = useState(null);
 
-	const handleImageChange = (event) => {
+	const handleImageChange = async (event) => {
 		const file = event.target.files[0];
 		if (file) {
 			const reader = new FileReader();
-			reader.onloadend = () => {
+			reader.onloadend = async () => {
 				setImage(reader.result);
+				const formData = new FormData();
+				formData.append("profile_pic", file);
+
+				try {
+					const response = await fetch(`${apiUrl}/api/users/update-profile-picture`, {
+						method: "POST",
+						body: formData,
+						credentials: "include",
+					});
+					const data = await response.json();
+					if (response.ok) {
+						alert("Profile picture updated successfully!");
+					} else {
+						alert(data.error);
+					}
+				} catch (error) {
+					alert("Error uploading image!");
+				}
 			};
 			reader.readAsDataURL(file);
 		}
 	};
-
 	useEffect(() => {
 		const storedUser = localStorage.getItem("user");
 		if (storedUser) {
 			setUser(JSON.parse(storedUser));
 		}
+
+		const fetchProfilePicture = async () => {
+			try {
+				const response = await fetch(`${apiUrl}/api/users/get-profile-picture`, {
+					method: "GET",
+					credentials: "include",
+				});
+				if (response.ok) {
+					const blob = await response.blob();
+					setImage(URL.createObjectURL(blob));
+				} else {
+					console.log("Error fetching profile picture");
+				}
+			} catch (error) {
+				console.log("Error fetching image:", error);
+			}
+		};
+
+		fetchProfilePicture();
 	}, []);
 
 	return (
@@ -31,7 +68,7 @@ const Profile = () => {
 					<div className="position-relative mb-3">
 						<label htmlFor="profile-image" className="cursor-pointer">
 							<img
-								src={image || "https://via.placeholder.com/100"}
+								src={image || "/avatar.png"}
 								alt="Profile"
 								className="rounded-circle border img-fluid"
 								style={{ width: "100px", height: "100px" }}
