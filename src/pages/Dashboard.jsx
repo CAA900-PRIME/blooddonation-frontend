@@ -1,35 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const Dashboard = () => {
 	const navigate = useNavigate();
 	const [bloodRequests, setBloodRequests] = useState([]);
 	const [appliedRequests, setAppliedRequests] = useState([]);
-	const [createdRequests, setCreatedRequests] = useState([
-		// {
-		//     id: 1,
-		//     username: "John Doe",
-		//     blood_type: "O+",
-		//     city: "New York",
-		//     country: "USA",
-		//     hospital_name: "NYC General Hospital",
-		//     hospital_address: "123 Main St, New York",
-		//     appointment: "2025-04-15",
-		//     status: "Pending"
-		// },
-		// {
-		//     id: 2,
-		//     username: "Jane Smith",
-		//     blood_type: "A-",
-		//     city: "Los Angeles",
-		//     country: "USA",
-		//     hospital_name: "LA Health Center",
-		//     hospital_address: "456 Sunset Blvd, LA",
-		//     appointment: "2025-04-20",
-		//     status: "Confirmed"
-		// }
-	]);
+	const [createdRequests, setCreatedRequests] = useState([]);
 	const [acceptedRequests, setAcceptedRequests] = useState([]);
 
 	useEffect(() => {
@@ -97,7 +74,31 @@ const Dashboard = () => {
 		}
 	};
 
-	const renderRequestList = (requests, btnText, btnColor, isCreated = false) => (
+	const handleApply = async (applicationId) => {
+		try {
+			const response = await fetch(`${apiUrl}/api/app/apply`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				credentials: "include",
+				body: JSON.stringify({ applicationId }),
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				alert("Applied successfully!");
+				setAppliedRequests([...appliedRequests, applicationId]);
+			} else {
+				alert(data.message || "Failed to apply.");
+			}
+		} catch (error) {
+			alert("An error occurred while applying.");
+			console.error(error);
+		}
+	};
+
+	const renderRequestList = (requests, btnText, btnColor, isCreated = false, onApply = null) => (
 		<ul className="list-group">
 			{requests.length > 0 ? (
 				requests.map((request) => (
@@ -110,7 +111,7 @@ const Dashboard = () => {
 						<span>Hospital Address: {request.hospital_address}</span>
 						<span>Appointment: {request.appointment}</span>
 						<span>Status: {request.status}</span>
-						{isCreated && (
+						{isCreated ? (
 							<>
 								<button className="btn btn-primary btn-sm mt-2 w-100" onClick={() => handleModify(request)}>
 									Modify Request
@@ -119,7 +120,11 @@ const Dashboard = () => {
 									Delete Request
 								</button>
 							</>
-						)}
+						) : onApply ? (
+							<button className={`btn btn-${btnColor} btn-sm mt-2 w-100`} onClick={() => onApply(request.id)}>
+								{btnText}
+							</button>
+						) : null}
 					</li>
 				))
 			) : (
@@ -138,7 +143,7 @@ const Dashboard = () => {
 								<h4 className="mb-0">Blood Requests</h4>
 							</div>
 							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-								{renderRequestList(bloodRequests, "Apply", "danger")}
+								{renderRequestList(bloodRequests, "Apply", "danger", false, handleApply)}
 							</div>
 						</div>
 					</div>
