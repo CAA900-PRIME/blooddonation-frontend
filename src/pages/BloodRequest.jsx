@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import { FaHospital, FaPhone, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
@@ -9,17 +9,21 @@ function BloodRequest({ user }) {
 	const location = useLocation();
 	const existingRequest = location.state?.request || null; // Retrieve data from navigation state
 	const isEditing = !!existingRequest; // Check if modifying an existing request
-
 	const [loading, setLoading] = useState(false);
-	const [formData, setFormData] = useState({
-		requester_id: user?.id || "",
-		hospital_name: existingRequest?.hospital_name || "",
-		hospital_address: existingRequest?.hospital_address || "",
-		country: existingRequest?.country || user?.country || "",
-		city: existingRequest?.city || user?.city || "",
-		phone_number: existingRequest?.phone_number || user?.phone_number || "",
-		appointment: existingRequest?.appointment || "",
-	});
+
+	//This will ensure the data does not persist when changing between 'Blood Request' and 'Modify Request'
+	const [formData, setFormData] = useState({});
+	useEffect(() => {
+		setFormData({
+			requester_id: user?.id || "",
+			hospital_name: existingRequest?.hospital_name || "",
+			hospital_address: existingRequest?.hospital_address || "",
+			country: existingRequest?.country || user?.country || "",
+			city: existingRequest?.city || user?.city || "",
+			phone_number: existingRequest?.phone_number || user?.phone_number || "",
+			appointment: existingRequest?.appointment || "",
+		});
+	}, [existingRequest, user]);
 
 	const handleChange = (e) => {
 		setFormData({ ...formData, [e.target.name]: e.target.value });
