@@ -4,7 +4,7 @@ import { FaHospital, FaPhone, FaMapMarkerAlt, FaUser } from "react-icons/fa";
 import { useNavigate, useLocation } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
 
-function BloodRequest({ user }) {
+function BloodRequest({ user, showAlert }) {
 	const navigate = useNavigate();
 	const location = useLocation();
 	const existingRequest = location.state?.request || null; // Retrieve data from navigation state
@@ -32,7 +32,7 @@ function BloodRequest({ user }) {
 	const handleSubmit = async (e) => {
 		e.preventDefault();
 		if (!formData.hospital_name || !formData.phone_number) {
-			alert("Please fill in all required fields.");
+			showAlert("Please fill in all required fields.", "warning")
 			return;
 		}
 		setLoading(true);
@@ -50,16 +50,15 @@ function BloodRequest({ user }) {
 			});
 
 			if (response.ok) {
-				alert(isEditing ? "Request updated successfully!" : "Request submitted successfully!");
+				showAlert(isEditing ? "Request updated successfully!" : "Request submitted successfully!", "success");
 				navigate("/dashboard");
 			} else {
 				const err = await response.json();
-				alert(err.error);
+				showAlert(err.error, "danager")
 			}
 		} catch (error) {
-			console.error("Error submitting blood request:", error);
+			showAlert(error, "danager")
 		}
-
 		setLoading(false);
 	};
 

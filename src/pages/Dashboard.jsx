@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const Dashboard = () => {
+const Dashboard = ({ showAlert }) => {
 	const navigate = useNavigate();
 	const [bloodRequests, setBloodRequests] = useState([]);
 	const [createdRequests, setCreatedRequests] = useState([]);
@@ -20,10 +20,10 @@ const Dashboard = () => {
 				if (response.ok) {
 					setBloodRequests(data);
 				} else {
-					console.error('Error fetching data:', data);
+					showAlert(data.error, "danger")
 				}
 			} catch (error) {
-				console.error('An error occurred:', error);
+				showAlert(error, "danger")
 			}
 		};
 
@@ -38,10 +38,10 @@ const Dashboard = () => {
 				if (response.ok) {
 					setCreatedRequests(data);
 				} else {
-					console.error('Error fetching data:', data);
+					showAlert(data.error, "danger")
 				}
 			} catch (error) {
-				console.error('An error occurred:', error);
+				showAlert(error, "danger")
 			}
 		};
 
@@ -56,10 +56,10 @@ const Dashboard = () => {
 				if (response.ok) {
 					setAcceptedRequests(data);
 				} else {
-					console.error('Error fetching data:', data);
+					showAlert(data.error, "danger")
 				}
 			} catch (error) {
-				console.error('An error occurred:', error);
+				showAlert(error, "danger")
 			}
 		};
 
@@ -85,11 +85,10 @@ const Dashboard = () => {
 				const errorData = await response.json();
 				throw new Error(errorData.error || "Failed to delete request");
 			}
-
 			setCreatedRequests(createdRequests.filter(request => request.id !== id));
-			alert("Request deleted successfully");
+			showAlert("Request deleted successfully!", "success")
 		} catch (error) {
-			alert(`Error: ${error.message}`);
+			showAlert(error, "danger")
 		}
 	};
 
@@ -104,17 +103,17 @@ const Dashboard = () => {
 
 			const data = await response.json();
 			if (response.ok) {
-				alert("Applied successfully!");
+				showAlert("Applied successfully!", "primary")
 				const appliedRequest = bloodRequests.find(req => req.id === id);
 				if (appliedRequest) {
 					setAcceptedRequests(prev => [...prev, appliedRequest]);
 					setBloodRequests(prev => prev.filter(req => req.id !== id));
 				}
 			} else {
-				alert(data.error);
+				showAlert(data.error, "danger")
 			}
 		} catch (error) {
-			alert("An error occurred while applying.");
+			showAlert(error, "danger")
 			console.error(error);
 		}
 	};
@@ -130,18 +129,17 @@ const Dashboard = () => {
 
 			const data = await response.json();
 			if (response.ok) {
-				alert("Application cancelled!");
-
+				showAlert("Application Cancelled!", "warning")
 				const canceledRequest = acceptedRequests.find(req => req.id === id);
 				if (canceledRequest) {
 					setAcceptedRequests(prev => prev.filter(req => req.id !== id));
 					setBloodRequests(prev => [...prev, canceledRequest]);
 				}
 			} else {
-				alert(data.error || "Failed to cancel.");
+				showAlert(data.error, "danger")
 			}
 		} catch (error) {
-			alert("An error occurred while cancelling.");
+			showAlert(error, "danger")
 			console.error(error);
 		}
 	};

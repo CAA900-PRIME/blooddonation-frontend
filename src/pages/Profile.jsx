@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { FaCamera } from "react-icons/fa";
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const Profile = () => {
+const Profile = ({ showAlert }) => {
 	const [image, setImage] = useState(null);
 	const [user, setUser] = useState(null);
 
@@ -23,12 +23,12 @@ const Profile = () => {
 					});
 					const data = await response.json();
 					if (response.ok) {
-						alert("Profile picture updated successfully!");
+						showAlert("Profile picture updated succesfully!", "success");
 					} else {
-						alert(data.error);
+						showAlert(data.error, "danger");
 					}
 				} catch (error) {
-					alert("Error uploading image!");
+					showAlert(error, "danger");
 				}
 			};
 			reader.readAsDataURL(file);

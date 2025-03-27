@@ -4,7 +4,7 @@ import signupImage from "../assets/signup_image.jpg";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const Signup = () => {
+const Signup = ({ showAlert }) => {
 	const [formData, setFormData] = useState({
 		firstName: "",
 		lastName: "",
@@ -39,6 +39,7 @@ const Signup = () => {
 				const data = await response.json();
 				setCountries(data.countries);
 			} catch (error) {
+				showAlert("error", "danger")
 				console.error("Error fetching countries:", error);
 			}
 		};
@@ -61,8 +62,6 @@ const Signup = () => {
 			city: "",
 		}));
 
-		console.log(selectedCountry)
-
 		try {
 			const response = await fetch(`${apiUrl}/api/city/get-cities-of-country/${selectedCountry}`);
 			if (!response.ok) {
@@ -71,6 +70,7 @@ const Signup = () => {
 			const data = await response.json();
 			setCities(data.cities);
 		} catch (error) {
+			showAlert("error", "danger")
 			console.error("Error fetching cities:", error);
 			setCities([]);
 		}
@@ -148,6 +148,7 @@ const Signup = () => {
 				setError(err.error || "Account creation failed.");
 			}
 		} catch (error) {
+			showAlert(error, "danger")
 			setError("An unexpected error occurred. Please try again.");
 		}
 	};
