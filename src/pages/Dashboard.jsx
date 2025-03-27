@@ -146,7 +146,11 @@ const Dashboard = () => {
 		}
 	};
 
-	const renderRequestList = (requests, btnText, btnColor, isCreated = false, onApply = null, onCancel = null) => (
+	const handleViewDetails = (id) => {
+		navigate(`/request-details/${id}`);
+	};
+
+	const renderRequestList = (requests, btnText, btnColor, isCreated = false, onApply = null, onCancel = null, onViewDetails = null) => (
 		<ul className="list-group">
 			{requests.length > 0 ? (
 				requests.map((request) => (
@@ -159,6 +163,7 @@ const Dashboard = () => {
 						<span>Hospital Address: {request.hospital_address}</span>
 						<span>Appointment: {request.appointment}</span>
 						<span>Status: {request.status}</span>
+
 						{isCreated ? (
 							<>
 								<button className="btn btn-primary btn-sm mt-2 w-100" onClick={() => handleModify(request)}>
@@ -173,9 +178,14 @@ const Dashboard = () => {
 								{btnText}
 							</button>
 						) : onCancel ? (
-							<button className="btn btn-outline-danger btn-sm mt-2 w-100" onClick={() => onCancel(request.id)}>
-								Cancel
-							</button>
+							<>
+								<button className="btn btn-outline-danger btn-sm mt-2 w-100" onClick={() => onCancel(request.id)}>
+									Cancel
+								</button>
+								<button className="btn btn-info btn-sm mt-2 w-100" onClick={() => onViewDetails(request.id)}>
+									View Details
+								</button>
+							</>
 						) : null}
 					</li>
 				))
@@ -208,7 +218,7 @@ const Dashboard = () => {
 								<h4 className="mb-0">Accepted Requests</h4>
 							</div>
 							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-								{renderRequestList(acceptedRequests, "Accepted ✅", "success", false, null, handleCancel)}
+								{renderRequestList(acceptedRequests, "Accepted ✅", "success", false, null, handleCancel, handleViewDetails)}
 							</div>
 						</div>
 					</div>
