@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 const apiUrl = import.meta.env.VITE_API_URL;
 
-const Login = ({ setUser }) => {
+const Login = ({ setUser, showAlert }) => {
 	const [email, setEmail] = useState("");
 	const [password, setPassword] = useState("");
 	const navigate = useNavigate();
@@ -22,13 +22,13 @@ const Login = ({ setUser }) => {
 			body: JSON.stringify({ email, password }),
 		});
 
+		const data = await response.json();
 		if (response.ok) {
-			const data = await response.json();
 			localStorage.setItem("user", JSON.stringify(data.user));
 			setUser(data.user);
 			navigate("/");
 		} else {
-			alert("Login failed");
+			showAlert(data.error, "danger");
 		}
 	};
 
