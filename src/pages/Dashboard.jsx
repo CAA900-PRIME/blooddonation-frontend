@@ -45,7 +45,6 @@ const Dashboard = () => {
 			}
 		};
 
-
 		const fetchAppliedApplication = async () => {
 			try {
 				const response = await fetch(`${apiUrl}/api/app/get-applied-applications`, {
@@ -64,7 +63,6 @@ const Dashboard = () => {
 			}
 		};
 
-
 		fetchApplications();
 		fetchMyApplication();
 		fetchAppliedApplication();
@@ -78,9 +76,7 @@ const Dashboard = () => {
 		try {
 			const response = await fetch(`${apiUrl}/api/app/delete-application`, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: { "Content-Type": "application/json" },
 				credentials: "include",
 				body: JSON.stringify({ app_id: id }),
 			});
@@ -101,9 +97,7 @@ const Dashboard = () => {
 		try {
 			const response = await fetch(`${apiUrl}/api/app/apply-application`, {
 				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
+				headers: { "Content-Type": "application/json" },
 				credentials: "include",
 				body: JSON.stringify({ app_id: id }),
 			});
@@ -111,7 +105,6 @@ const Dashboard = () => {
 			const data = await response.json();
 			if (response.ok) {
 				alert("Applied successfully!");
-				// Find and move request from bloodRequests to acceptedRequests
 				const appliedRequest = bloodRequests.find(req => req.id === id);
 				if (appliedRequest) {
 					setAcceptedRequests(prev => [...prev, appliedRequest]);
@@ -126,7 +119,29 @@ const Dashboard = () => {
 		}
 	};
 
-	const renderRequestList = (requests, btnText, btnColor, isCreated = false, onApply = null) => (
+	const handleCancel = async (id) => {
+		try {
+			const response = await fetch(`${apiUrl}/api/app/cancel-application`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				credentials: "include",
+				body: JSON.stringify({ app_id: id }),
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				alert("Application cancelled!");
+				setAcceptedRequests(prev => prev.filter(request => request.id !== id));
+			} else {
+				alert(data.error || "Failed to cancel.");
+			}
+		} catch (error) {
+			alert("An error occurred while cancelling.");
+			console.error(error);
+		}
+	};
+
+	const renderRequestList = (requests, btnText, btnColor, isCreated = false, onApply = null, onCancel = null) => (
 		<ul className="list-group">
 			{requests.length > 0 ? (
 				requests.map((request) => (
@@ -151,6 +166,10 @@ const Dashboard = () => {
 						) : onApply ? (
 							<button className={`btn btn-${btnColor} btn-sm mt-2 w-100`} onClick={() => onApply(request.id)}>
 								{btnText}
+							</button>
+						) : onCancel ? (
+							<button className="btn btn-outline-danger btn-sm mt-2 w-100" onClick={() => onCancel(request.id)}>
+								Cancel
 							</button>
 						) : null}
 					</li>
@@ -184,7 +203,7 @@ const Dashboard = () => {
 								<h4 className="mb-0">Accepted Requests</h4>
 							</div>
 							<div className="card-body overflow-auto" style={{ maxHeight: "75vh" }}>
-								{renderRequestList(acceptedRequests, "Accepted ✅", "success")}
+								{renderRequestList(acceptedRequests, "Accepted ✅", "success", false, null, handleCancel)}
 							</div>
 						</div>
 					</div>
