@@ -131,7 +131,12 @@ const Dashboard = () => {
 			const data = await response.json();
 			if (response.ok) {
 				alert("Application cancelled!");
-				setAcceptedRequests(prev => prev.filter(request => request.id !== id));
+
+				const canceledRequest = acceptedRequests.find(req => req.id === id);
+				if (canceledRequest) {
+					setAcceptedRequests(prev => prev.filter(req => req.id !== id));
+					setBloodRequests(prev => [...prev, canceledRequest]);
+				}
 			} else {
 				alert(data.error || "Failed to cancel.");
 			}
