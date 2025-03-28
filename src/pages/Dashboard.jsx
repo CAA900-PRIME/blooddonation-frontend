@@ -170,6 +170,15 @@ const Dashboard = ({ showAlert }) => {
 								<button className="btn btn-danger btn-sm mt-2 w-100" onClick={() => handleDelete(request.id)}>
 									Delete Request
 								</button>
+								{request.status == "Approved" && (
+									<button className="btn btn-secondary btn-sm mt-2 w-100 position-relative" onClick={() => handleViewDetails(request.id)}>
+										View Details
+										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+											New
+											<span class="visually-hidden">unread messages</span>
+										</span>
+									</button>
+								)}
 							</>
 						) : onApply ? (
 							<button className={`btn btn-${btnColor} btn-sm mt-2 w-100`} onClick={() => onApply(request.id)}>

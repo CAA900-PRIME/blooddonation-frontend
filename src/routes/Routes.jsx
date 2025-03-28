@@ -8,6 +8,8 @@ import BloodRequest from "../pages/BloodRequest";
 import Profile from "../pages/Profile.jsx";
 import ForgotPassword from "../pages/forgot-password";
 import VerifyOTP from "../pages/verify-otp";
+import RequestDetails from "../pages/RequestDetails.jsx";
+import EditProfile from "../pages/EditProfile.jsx";
 
 const AppRoutes = ({ user, setUser, showAlert }) => {
 	const isDev = process.env.NODE_ENV === "development";
@@ -24,6 +26,8 @@ const AppRoutes = ({ user, setUser, showAlert }) => {
 			<Route path="/blood-request" element={isDev || user ? <BloodRequest user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/profile" element={isDev || user ? <Profile user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/" element={<Home />} />
+			<Route path="/request-details/:id" element={isDev || user ? <RequestDetails user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
+			<Route path="/edit-profile" element={isDev || user ? <EditProfile user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 		</Routes>
 	);
 };

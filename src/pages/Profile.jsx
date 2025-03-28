@@ -35,10 +35,22 @@ const Profile = ({ showAlert }) => {
 		}
 	};
 	useEffect(() => {
-		const storedUser = localStorage.getItem("user");
-		if (storedUser) {
-			setUser(JSON.parse(storedUser));
-		}
+		const fetchUser = async () => {
+			try {
+				const response = await fetch(`${apiUrl}/api/users/get-user`, {
+					method: "GET",
+					credentials: "include",
+				});
+				if (response.ok) {
+					const data = await response.json();
+					setUser(data)
+				} else {
+					showAlert("Error fetching profile picture", "danger")
+				}
+			} catch (error) {
+				console.log("Error fetching image:", error);
+			}
+		};
 
 		const fetchProfilePicture = async () => {
 			try {
@@ -57,6 +69,7 @@ const Profile = ({ showAlert }) => {
 			}
 		};
 
+		fetchUser();
 		fetchProfilePicture();
 	}, []);
 
@@ -87,9 +100,7 @@ const Profile = ({ showAlert }) => {
 						{user?.firstName || "-"} {user?.lastName || "-"}
 					</h2>
 					<nav className="nav flex-column">
-						<button className="btn btn-light mb-2">Dashboard</button>
-						<button className="btn btn-danger text-white mb-2">Profile</button>
-						<button className="btn btn-light">Logout</button>
+						<a href="/edit-profile" className="btn btn-outline-danger">Edit Profile</a>
 					</nav>
 				</aside>
 
@@ -97,7 +108,6 @@ const Profile = ({ showAlert }) => {
 				<main className="ps-4 flex-grow-1">
 					<div className="d-flex justify-content-between align-items-center mb-4">
 						<h1 className="h4">Profile</h1>
-						<button className="btn btn-outline-danger">Edit</button>
 					</div>
 
 					<div className="row mb-4">
