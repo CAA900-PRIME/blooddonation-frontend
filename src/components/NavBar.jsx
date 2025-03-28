@@ -24,14 +24,14 @@ const NavBar = ({ user, setUser }) => {
 								<li className="nav-item">
 									<Link className="nav-link" to="/dashboard">Dashboard</Link>
 								</li>
-								<li className="nav-item">
+								{/*<li className="nav-item">
 									<Link className="nav-link" to="/info">Information</Link>
-								</li>
+								</li> */}
 								<li className="nav-item">
 									<Link className="nav-link" to="/blood-request">Request Blood</Link>
 								</li>
 								<li className="nav-item">
-									<button className="btn btn-warning me-2">🔔 Notifications</button>
+									<Link className="btn btn-warning me-2">🔔 Notifications</Link>
 								</li>
 								<li className="nav-item">
 									<Link to="/profile" className="btn btn-light me-2">👤 Profile</Link>
