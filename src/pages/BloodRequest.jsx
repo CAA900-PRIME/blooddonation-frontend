@@ -54,10 +54,10 @@ function BloodRequest({ user, showAlert }) {
 				navigate("/dashboard");
 			} else {
 				const err = await response.json();
-				showAlert(err.error, "danager")
+				showAlert(err.error, "danger")
 			}
 		} catch (error) {
-			showAlert(error, "danager")
+			showAlert(error, "danger")
 		}
 		setLoading(false);
 	};
