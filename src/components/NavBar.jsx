@@ -1,13 +1,23 @@
-import { Link } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
-
+import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 const NavBar = ({ user, setUser }) => {
 	const navigate = useNavigate();
+	const [isOpen, setIsOpen] = useState(false);
 	return (
 		<nav className="navbar navbar-expand-lg navbar-light bg-light sticky-top">
 			<div className="container-fluid">
 				<a className="navbar-brand" href="/">Blood Donation App</a>
-				<div className="collapse navbar-collapse">
+				<button
+					className="navbar-toggler"
+					type="button"
+					onClick={() => setIsOpen(!isOpen)}
+					aria-controls="navbarNav"
+					aria-expanded={isOpen}
+					aria-label="Toggle navigation"
+				>
+					<span className="navbar-toggler-icon"></span>
+				</button>
+				<div className={`collapse navbar-collapse ${isOpen ? "show" : ""}`} id="navbarNav">
 					<ul className="navbar-nav ms-auto">
 						{user ? (
 							<>
