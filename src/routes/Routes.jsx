@@ -31,6 +31,7 @@ const AppRoutes = ({ user, setUser, showAlert }) => {
 			<Route path="/" element={<Home />} />
 			<Route path="/request-details/:id" element={isDev || user ? <RequestDetails user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/edit-profile" element={isDev || user ? <EditProfile user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
+			<Route path="/enable-2fa" element={<TwoFactorSetup />} />
 		</Routes>
 	);
 };
