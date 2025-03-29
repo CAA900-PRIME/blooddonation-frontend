@@ -10,6 +10,9 @@ import ForgotPassword from "../pages/forgot-password";
 import VerifyOTP from "../pages/verify-otp";
 import RequestDetails from "../pages/RequestDetails.jsx";
 import EditProfile from "../pages/EditProfile.jsx";
+// route for Two-Factor Setup
+import TwoFactorSetup from "../components/TwoFactorSetup"; // adjust if path differs
+
 
 const AppRoutes = ({ user, setUser, showAlert }) => {
 	const isDev = process.env.NODE_ENV === "development";
