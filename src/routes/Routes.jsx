@@ -12,7 +12,7 @@ import RequestDetails from "../pages/RequestDetails.jsx";
 import EditProfile from "../pages/EditProfile.jsx";
 // route for Two-Factor Setup
 import TwoFactorSetup from "../components/TwoFactorSetup"; // adjust if path differs
-
+import ResetPassword from "../pages/ResetPassword";
 
 const AppRoutes = ({ user, setUser, showAlert }) => {
 	const isDev = process.env.NODE_ENV === "development";
