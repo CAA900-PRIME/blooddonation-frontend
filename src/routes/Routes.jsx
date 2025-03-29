@@ -34,6 +34,7 @@ const AppRoutes = ({ user, setUser, showAlert }) => {
 			<Route path="/forgot-password" element={<ForgotPassword />} />
 			<Route path="/enable-2fa" element={<TwoFactorSetup />} />
 			<Route path="/verify-otp" element={<VerifyOTP />} />
+			<Route path="/reset-password" element={<ResetPassword />} />
 			
 		</Routes>
 	);
