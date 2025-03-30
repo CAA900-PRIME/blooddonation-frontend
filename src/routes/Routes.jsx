@@ -10,6 +10,7 @@ import ForgotPassword from "../pages/forgot-password";
 import VerifyOTP from "../pages/verify-otp";
 import RequestDetails from "../pages/RequestDetails.jsx";
 import EditProfile from "../pages/EditProfile.jsx";
+import ResetPassword from "../pages/ResetPassword.jsx"
 
 const AppRoutes = ({ user, setUser, showAlert }) => {
 	const isDev = process.env.NODE_ENV === "development";
@@ -18,7 +19,7 @@ const AppRoutes = ({ user, setUser, showAlert }) => {
 		<Routes>
 			<Route path="/login" element={<Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/signup" element={<Signup showAlert={showAlert} />} />
-			<Route path="/forgot-password" element={isDev || user ? <ForgotPassword user={user} /> : <Login setUser={setUser} showAlert={showAlert} />} />
+			<Route path="/forgot-password" element={<ForgotPassword user={user} />} />
 			<Route path="/verify-otp" element={isDev || user ? <VerifyOTP user={user} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/dashboard" element={isDev || user ? <Dashboard user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/info" element={isDev || user ? <InfoPage user={user} /> : <Login setUser={setUser} showAlert={showAlert} />} />
@@ -28,6 +29,7 @@ const AppRoutes = ({ user, setUser, showAlert }) => {
 			<Route path="/" element={<Home />} />
 			<Route path="/request-details/:id" element={isDev || user ? <RequestDetails user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/edit-profile" element={isDev || user ? <EditProfile user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
+			<Route path="/reset-password" element={isDev || user ? <ResetPassword user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 		</Routes>
 	);
 };
