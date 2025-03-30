@@ -34,7 +34,10 @@ const NavBar = ({ user, setUser }) => {
 									<Link className="btn btn-warning me-2">🔔 Notifications</Link>
 								</li>
 								<li className="nav-item">
-									<Link to="/profile" className="btn btn-light me-2">👤 Profile</Link>
+									<Link to="/profile" className="btn btn-light me-2 d-flex align-items-center position-relative">
+										👤 {user.username}
+										<span className="badge rounded-pill bg-primary ms-2">Profile</span>
+									</Link>
 								</li>
 								<li className="nav-item">
 									<button className="btn btn-danger" onClick={() => {

@@ -110,16 +110,14 @@ const Signup = ({ showAlert }) => {
 			!sex ||
 			!blood_type
 		) {
-			setError("Please fill out all required fields.");
+			showAlert("Please fill out all required fields.", "danger")
 			return;
 		}
 
 		if (password !== confirmPassword) {
-			setError("Passwords do not match.");
+			showAlert("Passwords do not match.", "danger")
 			return;
 		}
-
-		setError("");
 		try {
 			const response = await fetch(`${apiUrl}/api/auth/signup`, {
 				method: "POST",
@@ -145,7 +143,7 @@ const Signup = ({ showAlert }) => {
 				navigate("/login");
 			} else {
 				const err = await response.json();
-				setError(err.error || "Account creation failed.");
+				showAlert(err.error, "danger")
 			}
 		} catch (error) {
 			showAlert(error, "danger")
