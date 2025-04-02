@@ -31,7 +31,7 @@ const NavBar = ({ user, setUser }) => {
 									<Link className="nav-link" to="/blood-request">Request Blood</Link>
 								</li>
 								<li className="nav-item">
-									<Link className="btn btn-warning me-2">🔔 Notifications</Link>
+									<Link className="btn btn-warning me-2" to="/logs">🔔</Link>
 								</li>
 								<li className="nav-item">
 									<Link to="/profile" className="btn btn-light me-2 d-flex align-items-center position-relative">

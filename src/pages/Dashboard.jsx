@@ -207,8 +207,8 @@ const Dashboard = ({ showAlert }) => {
 			<div className="container-fluid mt-4">
 				<div className="row">
 					{/* Blood Requests Section */}
-					<div className="col-md-4">
-						<div className="card shadow-sm">
+					<div className="col-md-4" >
+						<div className="card shadow-sm" style={{ padding: 0 }}>
 							<div className="card-header bg-danger text-white text-center">
 								<h4 className="mb-0">Blood Requests</h4>
 							</div>
@@ -220,7 +220,7 @@ const Dashboard = ({ showAlert }) => {
 
 					{/* Accepted Requests Section */}
 					<div className="col-md-4">
-						<div className="card shadow-sm">
+						<div className="card shadow-sm" style={{ padding: 0 }}>
 							<div className="card-header bg-success text-white text-center">
 								<h4 className="mb-0">Accepted Requests</h4>
 							</div>
@@ -232,7 +232,7 @@ const Dashboard = ({ showAlert }) => {
 
 					{/* Created Requests Section */}
 					<div className="col-md-4">
-						<div className="card shadow-sm">
+						<div className="card shadow-sm" style={{ padding: 0 }}>
 							<div className="card-header bg-primary text-white text-center">
 								<h4 className="mb-0">Created Requests</h4>
 							</div>
