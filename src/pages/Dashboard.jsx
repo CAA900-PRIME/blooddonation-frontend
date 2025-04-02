@@ -151,7 +151,7 @@ const Dashboard = ({ showAlert }) => {
 	const renderRequestList = (requests, btnText, btnColor, isCreated = false, onApply = null, onCancel = null, onViewDetails = null) => (
 		<ul className="list-group">
 			{requests.length > 0 ? (
-				requests.map((request) => (
+				[...requests].reverse().map((request) => ( // ✅ Reverse to show latest first
 					<li key={request.id} className="list-group-item d-flex flex-column bg-white shadow-sm p-3 mb-2">
 						<strong className="text-danger">{request.username}</strong>
 						<span>Blood Group: <span className="badge bg-danger">{request.blood_type}</span></span>
@@ -159,7 +159,7 @@ const Dashboard = ({ showAlert }) => {
 						<span>Country: {request.country}</span>
 						<span>Hospital Name: {request.hospital_name}</span>
 						<span>Hospital Address: {request.hospital_address}</span>
-						<span>Appointment: {request.appointment}</span>
+						<span>Appointment: {new Date(request.appointment).toLocaleString()}</span>
 						<span>Status: {request.status}</span>
 
 						{isCreated ? (
@@ -170,12 +170,12 @@ const Dashboard = ({ showAlert }) => {
 								<button className="btn btn-danger btn-sm mt-2 w-100" onClick={() => handleDelete(request.id)}>
 									Delete Request
 								</button>
-								{request.status == "Approved" && (
+								{request.status === "Approved" && (
 									<button className="btn btn-secondary btn-sm mt-2 w-100 position-relative" onClick={() => handleViewDetails(request.id)}>
 										View Details
-										<span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+										<span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
 											New
-											<span class="visually-hidden">unread messages</span>
+											<span className="visually-hidden">unread messages</span>
 										</span>
 									</button>
 								)}
@@ -202,13 +202,14 @@ const Dashboard = ({ showAlert }) => {
 		</ul>
 	);
 
+
 	return (
 		<div style={{ backgroundColor: "#fff", minHeight: "100vh" }}>
 			<div className="container-fluid mt-4">
 				<div className="row">
 					{/* Blood Requests Section */}
-					<div className="col-md-4">
-						<div className="card shadow-sm">
+					<div className="col-md-4" >
+						<div className="card shadow-sm" style={{ padding: 0 }}>
 							<div className="card-header bg-danger text-white text-center">
 								<h4 className="mb-0">Blood Requests</h4>
 							</div>
@@ -220,7 +221,7 @@ const Dashboard = ({ showAlert }) => {
 
 					{/* Accepted Requests Section */}
 					<div className="col-md-4">
-						<div className="card shadow-sm">
+						<div className="card shadow-sm" style={{ padding: 0 }}>
 							<div className="card-header bg-success text-white text-center">
 								<h4 className="mb-0">Accepted Requests</h4>
 							</div>
@@ -232,7 +233,7 @@ const Dashboard = ({ showAlert }) => {
 
 					{/* Created Requests Section */}
 					<div className="col-md-4">
-						<div className="card shadow-sm">
+						<div className="card shadow-sm" style={{ padding: 0 }}>
 							<div className="card-header bg-primary text-white text-center">
 								<h4 className="mb-0">Created Requests</h4>
 							</div>

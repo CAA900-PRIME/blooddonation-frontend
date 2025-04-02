@@ -10,7 +10,8 @@ import ForgotPassword from "../pages/forgot-password";
 import VerifyOTP from "../pages/verify-otp";
 import RequestDetails from "../pages/RequestDetails.jsx";
 import EditProfile from "../pages/EditProfile.jsx";
-import ResetPassword from "../pages/ResetPassword.jsx"
+// import ResetPassword from "../pages/ResetPassword.jsx";
+import Logs from "../pages/Logs.jsx";
 
 const AppRoutes = ({ user, setUser, showAlert }) => {
 	const isDev = process.env.NODE_ENV === "development";
@@ -29,7 +30,8 @@ const AppRoutes = ({ user, setUser, showAlert }) => {
 			<Route path="/" element={<Home />} />
 			<Route path="/request-details/:id" element={isDev || user ? <RequestDetails user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/edit-profile" element={isDev || user ? <EditProfile user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
-			<Route path="/reset-password" element={isDev || user ? <ResetPassword user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
+			{/* <Route path="/reset-password" element={isDev || user ? <ResetPassword user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} /> */}
+			<Route path="/logs" element={isDev || user ? <Logs user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 		</Routes>
 	);
 };
