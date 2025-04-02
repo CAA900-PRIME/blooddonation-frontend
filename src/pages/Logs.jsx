@@ -26,7 +26,7 @@ const Logs = ({ showAlert }) => {
 
 	const renderLogList = (logs) => {
 		return logs.length > 0 ? (
-			logs.map((log) => (
+			[...logs].reverse().map((log) => (
 				<div key={log.id} className="card text-bg-secondary mb-3" style={{ padding: 0 }}>
 					<div className="card-header">
 						{log.action_type}
