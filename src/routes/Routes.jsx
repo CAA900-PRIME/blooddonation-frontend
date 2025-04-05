@@ -24,7 +24,7 @@ const AppRoutes = ({ user, setUser, showAlert }) => {
 			<Route path="/verify-otp" element={isDev || user ? <VerifyOTP user={user} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/dashboard" element={isDev || user ? <Dashboard user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/info" element={isDev || user ? <InfoPage user={user} /> : <Login setUser={setUser} showAlert={showAlert} />} />
-			<Route path="/home" element={<Home />} />
+			<Route path="/home" element={<Home user={user} />} />
 			<Route path="/blood-request" element={isDev || user ? <BloodRequest user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/profile" element={isDev || user ? <Profile user={user} showAlert={showAlert} /> : <Login setUser={setUser} showAlert={showAlert} />} />
 			<Route path="/" element={<Home />} />

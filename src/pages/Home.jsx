@@ -3,8 +3,10 @@ import Lottie from "lottie-react";
 import { FaClock, FaSyringe, FaUsers } from "react-icons/fa";
 import { motion } from "framer-motion";
 import animationData from "../assets/donate-animation.json"; // Make sure this exists
+import { useState } from "react";
 
 function Home() {
+	const [user] = useState(() => JSON.parse(localStorage.getItem("user")));
 	const bloodStats = [
 		{ type: "O+", needed: 120 },
 		{ type: "A-", needed: 75 },
@@ -38,9 +40,13 @@ function Home() {
 							<Link className="btn btn-light btn-lg px-4 btn-donor" to="/signup">
 								❤️ Become a Donor
 							</Link>
-							<Link className="btn btn-outline-light btn-lg px-4" to="/login">
-								Login
-							</Link>
+							{user ? (
+								null
+							) : (
+								<Link className="btn btn-outline-light btn-lg px-4" to="/login">
+									Login
+								</Link>
+							)}
 						</div>
 						<p className="text-light mt-3">
 							⏳ Blood banks are running low. Be the reason someone sees tomorrow.
