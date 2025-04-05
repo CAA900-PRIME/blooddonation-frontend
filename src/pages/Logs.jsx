@@ -49,7 +49,7 @@ const Logs = ({ showAlert }) => {
 			<div className="card-header text-center">
 				<h4 className="mb-0">Logs</h4>
 			</div>
-			<div className="card-body overflow-auto">
+			<div className="card-body overflow-auto" style={{ maxHeight: '80vh', overflowY: 'auto' }}>
 				{renderLogList(logs)}
 			</div>
 		</div>
